@@ -11,7 +11,7 @@ import {
   MenuList,
   MenuItem,
   Heading,
-  Hide
+  Hide,
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import { ChevronDownIcon, MoonIcon, SunIcon } from "@chakra-ui/icons";
@@ -51,7 +51,9 @@ export default function Navbar() {
                     <MenuItem>
                       <Link to="/account">Your Account</Link>
                     </MenuItem>
-                    <MenuItem>Logout</MenuItem>
+                    <MenuItem>
+                      <Link to="/">Logout</Link>
+                    </MenuItem>
                   </MenuList>
                 </Menu>
               </>
