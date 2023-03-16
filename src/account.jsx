@@ -84,6 +84,9 @@ export default function Account() {
         <HStack>
           <Heading size={"md"}>Profile setting</Heading>
         </HStack>
+        <Stack>
+          <Heading size={"md"}>Total Posts</Heading>
+        </Stack>
       </Stack>
       <Spacer />
       <Stack width={{ md: "100%", lg: "50%" }}>
@@ -142,12 +145,7 @@ export default function Account() {
         <Stack spacing="30px">
           <FormControl>
             <FormLabel>User Name</FormLabel>
-            <Input
-              isDisabled={!editMode}
-              variant="filled"
-              ref={Username}
-              value={userData.userName}
-            />
+            <Input isDisabled={!editMode} variant="filled" ref={Username} />
           </FormControl>
           <FormControl>
             <FormLabel>Email</FormLabel>

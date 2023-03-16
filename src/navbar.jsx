@@ -12,11 +12,23 @@ import {
   MenuItem,
   Heading,
   Hide,
+  Icon,
+  Center,
+  Image,
+  Text,
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
-import { ChevronDownIcon, MoonIcon, SunIcon } from "@chakra-ui/icons";
+import {
+  ChevronDownIcon,
+  MoonIcon,
+  SunIcon,
+  ArrowBackIcon,
+  TriangleDownIcon,
+  InfoIcon,
+} from "@chakra-ui/icons";
 import Register from "./register";
 import Login from "./login";
+import logo from "./logo/Notify.png";
 
 export default function Navbar() {
   const { colorMode, toggleColorMode } = useColorMode();
@@ -24,10 +36,32 @@ export default function Navbar() {
   const isAuth = true;
   return (
     <>
-      <Flex px={4} h="70px" align="center" w="full">
-        <Box>
-          <Heading>.Blog</Heading>
-        </Box>
+      <Flex
+        px={4}
+        h="70px"
+        align="center"
+        w="full"
+        pos="sticky"
+        top="0"
+        left="0"
+        zIndex={500}
+        bgGradient="linear(to-l,#7fc9df,#d038eb,#7fc9df)"
+      >
+        <Flex align={"center"}>
+          {/* Notify me. */}
+          <Image
+            borderRadius="full"
+            boxSize="50px"
+            src={logo}
+            alt="Dan Abramov"
+          />
+          <Box>
+            <Heading size="lg" color={"white"}>
+              Notify me.
+            </Heading>
+            <Text fontSize="xs">Better for now</Text>
+          </Box>
+        </Flex>
         <Spacer />
         <HStack>
           <>
@@ -49,10 +83,18 @@ export default function Navbar() {
 
                   <MenuList>
                     <MenuItem>
-                      <Link to="/account">Your Account</Link>
+                      <Link to="/account">
+                        <Center>
+                          <InfoIcon />
+                          Your Account
+                        </Center>
+                      </Link>
                     </MenuItem>
                     <MenuItem>
-                      <Link to="/">Logout</Link>
+                      <Link to="/">
+                        {" "}
+                        <ArrowBackIcon /> Logout
+                      </Link>
                     </MenuItem>
                   </MenuList>
                 </Menu>
