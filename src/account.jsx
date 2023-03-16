@@ -24,7 +24,7 @@ import {
   ModalBody,
   ModalCloseButton,
   useDisclosure,
-  Button
+  Button,
 } from "@chakra-ui/react";
 import { ArrowBackIcon, EditIcon } from "@chakra-ui/icons";
 import { Link, useLocation } from "react-router-dom";
@@ -45,32 +45,15 @@ export default function Account() {
     >
       <Stack width={{ md: "100%", lg: "50%" }}>
         <HStack>
-          <Link to="/">
-            <IconButton
-              colorScheme="blue"
-              aria-label="Search database"
-              icon={<ArrowBackIcon />}
-            />
-          </Link>
-
-          <Heading size="md">Account Setting</Heading>
+          <Heading size={"md"}>Profile setting</Heading>
         </HStack>
-        <Text>Here You con edit your publick profile information</Text>
-        <FormControl>
-          <FormLabel>Email Address</FormLabel>
-          <Input />
-        </FormControl>
-        <FormControl>
-          <FormLabel>User Name</FormLabel>
-          <Input />
-        </FormControl>
       </Stack>
       <Spacer />
       <Stack width={{ md: "100%", lg: "50%" }}>
         <Heading size="md">Profile Photo</Heading>
         <Center>
           <Avatar
-            size="xl"
+            size="2xl"
             name="Segun Adebayo"
             src="https://avatars.githubusercontent.com/u/103850217?v=4"
             alt="User name"
@@ -126,6 +109,14 @@ export default function Account() {
             <FormLabel>Password</FormLabel>
             <Input value="Praful@123" />
           </FormControl>
+          <Button
+            w={"min-content"}
+            fontSize={"xs"}
+            size={"sm"}
+            colorScheme="messenger"
+          >
+            Save
+          </Button>
         </Stack>
       </Stack>
     </Flex>
