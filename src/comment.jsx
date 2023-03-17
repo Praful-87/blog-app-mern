@@ -9,7 +9,7 @@ const CommentCard = () => {
       rounded="md"
       shadow="md"
       // border="1px solid gray"
-      my="10px"
+      my="20px"
     >
       <Flex align={"center"}>
         <Avatar

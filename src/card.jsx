@@ -26,6 +26,7 @@ import {
   Collapse,
   VStack,
   Input,
+  useToast,
 } from "@chakra-ui/react";
 import { ArrowBackIcon } from "@chakra-ui/icons";
 import { BiLike, BiChat, BiShare } from "react-icons/bi";
@@ -34,6 +35,7 @@ import React from "react";
 import CommentCard from "./comment";
 
 const SigleBlog = ({ data }) => {
+  const toast = useToast();
   const { blog, user_id } = data;
   const { name } = user_id;
   // console.log(data);
@@ -41,13 +43,22 @@ const SigleBlog = ({ data }) => {
   const count = 2;
   const commnet = 2;
   const posted = "2022-04-03";
-  const comments = [1, 1, 1, 1, 1];
+  const comments = [1, 1];
   const post_image =
     "https://images.unsplash.com/photo-1678662543244-51054fbe49e0?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHx0b3BpYy1mZWVkfDR8NnNNVmpUTFNrZVF8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=60";
   const profile_image = "https://avatars.githubusercontent.com/u/103850217?v=4";
-
+  function addComment() {
+    toast({
+      title: "Commnet Added",
+      description: "We got your comment",
+      status: "success",
+      position: "top",
+      duration: 3000,
+      isClosable: true,
+    });
+  }
   return (
-    <Card>
+    <Card pb={4}>
       <CardHeader>
         <Flex flex="1" gap="4" alignItems="center" flexWrap="wrap">
           <Avatar name={name} src={profile_image} />
@@ -62,19 +73,19 @@ const SigleBlog = ({ data }) => {
         <AspectRatio maxW="400px" ratio={4 / 3}>
           <Image src={post_image} alt={name} objectFit="cover" />
         </AspectRatio>
-        <Text fontSize="sm" fontFamily={"sans-serif"} mt="20px">
+        <Text fontSize="sm" fontFamily={"sans-serif"} mt="40px">
           {blog}
         </Text>
       </CardBody>
       <CardFooter>
-        <Button
+        {/* <Button
           size={"sm"}
           fontSize="sm"
           leftIcon={<BiLike />}
           colorScheme="pink"
         >
           Like {count}
-        </Button>
+        </Button> */}
         <Box>
           <Button
             ml={"20px"}
@@ -96,6 +107,7 @@ const SigleBlog = ({ data }) => {
               <Flex align={"center"}>
                 <Input />
                 <Button
+                  onClick={addComment}
                   p={4}
                   ml="10px"
                   colorScheme={"green"}
