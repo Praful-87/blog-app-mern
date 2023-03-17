@@ -50,7 +50,7 @@ const SigleBlog = ({ data }) => {
   function addComment() {
     toast({
       title: "Commnet Added",
-      description: "We got your comment",
+
       status: "success",
       position: "top",
       duration: 3000,
@@ -65,7 +65,9 @@ const SigleBlog = ({ data }) => {
 
           <Box>
             <Heading size="sm">{name} </Heading>
-            <Text fontSize="xs">Posted On: {posted}</Text>
+            <Text mt={1} fontSize="xs">
+              Posted On: {posted}
+            </Text>
           </Box>
         </Flex>
       </CardHeader>

@@ -47,21 +47,23 @@ export default function Navbar() {
         zIndex={500}
         bgGradient="linear(to-l,#7fc9df,#d038eb,#7fc9df)"
       >
-        <Flex align={"center"}>
-          {/* Notify me. */}
-          <Image
-            borderRadius="full"
-            boxSize="50px"
-            src={logo}
-            alt="Dan Abramov"
-          />
-          <Box>
-            <Heading size="lg" color={"white"}>
-              Notify Me.
-            </Heading>
-            <Text fontSize="xs">Better for now</Text>
-          </Box>
-        </Flex>
+        <Link to="">
+          <Flex align={"center"}>
+            {/* Notify me. */}
+            <Image
+              borderRadius="full"
+              boxSize="50px"
+              src={logo}
+              alt="Dan Abramov"
+            />
+            <Box ml={1}>
+              <Heading size="lg" color={"white"}>
+                Notify Me.
+              </Heading>
+              <Text fontSize="xs">Better for now</Text>
+            </Box>
+          </Flex>
+        </Link>
         <Spacer />
         <HStack>
           <>
@@ -84,16 +86,16 @@ export default function Navbar() {
                   <MenuList>
                     <MenuItem>
                       <Link to="/account">
-                        <Center>
-                          <InfoIcon />
-                          Your Account
-                        </Center>
+                        {" "}
+                        <InfoIcon />
+                        &nbsp; Account
                       </Link>
                     </MenuItem>
                     <MenuItem>
                       <Link to="/">
                         {" "}
-                        <ArrowBackIcon /> Logout
+                        <ArrowBackIcon />
+                        &nbsp; Logout
                       </Link>
                     </MenuItem>
                   </MenuList>

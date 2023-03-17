@@ -28,7 +28,7 @@ import {
   Tooltip,
   useToast,
 } from "@chakra-ui/react";
-import { ArrowBackIcon, EditIcon } from "@chakra-ui/icons";
+import { ArrowBackIcon, EditIcon, SettingsIcon } from "@chakra-ui/icons";
 import { Link, useLocation } from "react-router-dom";
 import { useRef, useState } from "react";
 export default function Account() {
@@ -77,19 +77,34 @@ export default function Account() {
     <Flex
       width="90%"
       margin="auto"
+      mt={8}
       gap="30px"
       direction={{ base: "column", lg: "row" }}
     >
-      <Stack width={{ md: "100%", lg: "50%" }}>
-        <HStack>
-          <Heading size={"md"}>Profile setting</Heading>
-        </HStack>
-        <Stack>
-          <Heading size={"md"}>Total Posts</Heading>
-        </Stack>
+      <Stack
+        shadow={"md"}
+        rounded="md"
+        overflow={"hidden"}
+        width={{ md: "100%", lg: "50%" }}
+      >
+        <Image
+          objectFit={"fill"}
+          h="100%"
+          src="https://www.blogger.com/about/img/social/facebook-1200x630.jpg"
+          alt="Avatar"
+        />
+        {/* <img
+          src="https://www.blogger.com/about/img/social/facebook-1200x630.jpg"
+          alt="Avatar"
+          class="image"
+        /> */}
       </Stack>
       <Spacer />
       <Stack width={{ md: "100%", lg: "50%" }}>
+        <HStack alignItems={"center"}>
+          {" "}
+          <SettingsIcon /> <Heading size="md">Account settings</Heading>
+        </HStack>
         <Heading size="md">Profile Photo</Heading>
         <Center>
           <Avatar
