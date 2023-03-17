@@ -21,21 +21,29 @@ import {
   AccordionButton,
   AccordionPanel,
   AccordionIcon,
+  useDisclosure,
+  SlideFade,
+  Collapse,
+  VStack,
+  Input,
 } from "@chakra-ui/react";
 import { ArrowBackIcon } from "@chakra-ui/icons";
 import { BiLike, BiChat, BiShare } from "react-icons/bi";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import React from "react";
+import CommentCard from "./comment";
 
 const SigleBlog = ({ data }) => {
   const { blog, user_id } = data;
   const { name } = user_id;
   // console.log(data);
+  const { isOpen, onToggle } = useDisclosure();
   const count = 2;
   const commnet = 2;
   const posted = "2022-04-03";
+  const comments = [1, 1, 1, 1, 1];
   const post_image =
-    "https://images.unsplash.com/photo-1594315590298-329f49c8dcb9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8dGhlJTIwc3VufGVufDB8fDB8fA%3D%3D&w=1000&q=80";
+    "https://images.unsplash.com/photo-1678662543244-51054fbe49e0?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHx0b3BpYy1mZWVkfDR8NnNNVmpUTFNrZVF8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=60";
   const profile_image = "https://avatars.githubusercontent.com/u/103850217?v=4";
 
   return (
@@ -59,38 +67,47 @@ const SigleBlog = ({ data }) => {
         </Text>
       </CardBody>
       <CardFooter>
-        {/* <Button
+        <Button
           size={"sm"}
           fontSize="sm"
           leftIcon={<BiLike />}
           colorScheme="pink"
         >
           Like {count}
-        </Button> */}
-
-        <Accordion defaultIndex={[0]} allowMultiple>
-          <AccordionItem>
-            <h2>
-              <AccordionButton>
+        </Button>
+        <Box>
+          <Button
+            ml={"20px"}
+            onClick={onToggle}
+            size={"sm"}
+            fontSize="sm"
+            leftIcon={<BiChat />}
+            colorScheme="green"
+          >
+            Comments {commnet}
+          </Button>
+          <Collapse in={isOpen} animateOpacity>
+            <Box mt="4" rounded="md" shadow="md">
+              {comments.map((el, i) => {
+                return <CommentCard key={i} />;
+              })}
+            </Box>
+            <Box>
+              <Flex align={"center"}>
+                <Input />
                 <Button
-                  size={"sm"}
-                  fontSize="sm"
-                  leftIcon={<BiChat />}
-                  colorScheme="green"
+                  p={4}
+                  ml="10px"
+                  colorScheme={"green"}
+                  size="sm"
+                  fontSize={"sm"}
                 >
-                  Comments {commnet}
+                  Commnet
                 </Button>
-                <AccordionIcon />
-              </AccordionButton>
-            </h2>
-            <AccordionPanel pb={4}>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea commodo consequat.
-            </AccordionPanel>
-          </AccordionItem>
-        </Accordion>
+              </Flex>
+            </Box>
+          </Collapse>
+        </Box>
       </CardFooter>
     </Card>
   );

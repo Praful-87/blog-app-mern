@@ -1,12 +1,4 @@
-import {
-  Heading,
-  Hide,
-  Box,
-  Show,
-  Button,
-  Stack,
-  
-} from "@chakra-ui/react";
+import { Heading, Hide, Box, Show, Button, Stack } from "@chakra-ui/react";
 // import {Card} from "./card"
 import axios from "axios";
 import { useEffect } from "react";
@@ -30,9 +22,8 @@ export default function Homepage() {
         size={"sm"}
         fontSize={"sm"}
         colorScheme={"facebook"}
-        variant={"outline"}
         pos={"fixed"}
-        bottom="10px"
+        top="80px"
         right="10px"
         zIndex={400}
         leftIcon={<AddIcon />}
