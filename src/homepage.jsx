@@ -1,24 +1,31 @@
-import { Heading, Hide, Box, Show, Button, Stack } from "@chakra-ui/react";
+import {
+  Heading,
+  Hide,
+  Box,
+  Show,
+  Button,
+  Stack,
+  
+} from "@chakra-ui/react";
 // import {Card} from "./card"
 import axios from "axios";
 import { useEffect } from "react";
 import { AddIcon } from "@chakra-ui/icons";
 import SigleBlog from "./card";
+import { getData } from "./Redux/App/action";
+import { useDispatch, useSelector } from "react-redux";
 export default function Homepage() {
+  const dispatch = useDispatch();
+  const data = useSelector((state) => state.AppReducer.data);
+  console.log(data);
   const isAuth = true;
-  const data = [1,1,1,1];
-  async function getData() {
-    try {
-      let res = await axios.get("https://jsonplaceholder.typicode.com/todos/");
-      let data = await res.data;
-      console.log(data);
-    } catch (err) {}
-  }
+  // const data = [1, 1, 1, 1];
+
   useEffect(() => {
-    // getData();
+    dispatch(getData);
   }, []);
   return (
-    <Box h="100vh">
+    <Box>
       <Button
         size={"sm"}
         fontSize={"sm"}
@@ -33,9 +40,10 @@ export default function Homepage() {
         New Blog
       </Button>
       <Stack>
-        {data.map((el, i) => {
-          return <SigleBlog key={i} />;
-        })}
+        {data.length > 0 &&
+          data.map((el) => {
+            return <SigleBlog key={el._id} data={el} />;
+          })}
       </Stack>
     </Box>
   );

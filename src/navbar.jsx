@@ -57,7 +57,7 @@ export default function Navbar() {
           />
           <Box>
             <Heading size="lg" color={"white"}>
-              Notify me.
+              Notify Me.
             </Heading>
             <Text fontSize="xs">Better for now</Text>
           </Box>
