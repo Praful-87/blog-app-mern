@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 export default function Homepage() {
   const dispatch = useDispatch();
   const data = useSelector((state) => state.AppReducer.data);
-  console.log(data);
+  // console.log(data);
   const isAuth = true;
   // const data = [1, 1, 1, 1];
 
