@@ -31,44 +31,58 @@ import {
 import { ArrowBackIcon } from "@chakra-ui/icons";
 import { BiLike, BiChat, BiShare } from "react-icons/bi";
 import { BsThreeDotsVertical } from "react-icons/bs";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import axios from "axios";
 import CommentCard from "./comment";
 const SigleBlog = ({ data }) => {
-  const [usedOnce, setUsedOnce] = useState(false);
+  const [used, setUsed] = useState(false);
+  const [commnetData, setCommnetData] = useState([]);
+  const NewCommnet = useRef(null);
   const toast = useToast();
+  // console.log(data)
   const { blog, user_id } = data;
   const { name } = user_id;
   // console.log(data);
   const { isOpen, onToggle } = useDisclosure();
-  const count = 2;
   const commnet = 2;
   const posted = "2022-04-03";
-  const comments = [1, 1];
   const post_image =
     "https://images.unsplash.com/photo-1678662543244-51054fbe49e0?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHx0b3BpYy1mZWVkfDR8NnNNVmpUTFNrZVF8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=60";
   const profile_image = "https://avatars.githubusercontent.com/u/103850217?v=4";
-  async function getComments() {
-    // onToggle()
-    try {
-      let res = await axios.get(
-        "http://localhost:8000/comment/6415e531af5c1bb2bbff5921/"
-      );
-      let data = await res.data;
-      console.log(data);
-    } catch (err) {
-      console.log(err.message);
+  async function getComments(blog_id) {
+    onToggle();
+
+    if (!used) {
+      // console.log(used);
+      try {
+        let res = await axios.get(`http://localhost:8000/comment/${blog_id}/`);
+        let data = await res.data;
+        setCommnetData(data);
+      } catch (err) {
+        console.log(err.message);
+      }
+      setUsed(true);
     }
   }
-  function addComment() {
-    toast({
-      title: "Commnet Added",
+  function addComment(blog_id) {
+    let commnet_data = NewCommnet.current.value;
+    if (commnet_data) {
+      let payload = {
+        // user_id,
+        blog_id,
+        comment: commnet_data,
+      };
+      console.log(payload);
 
-      status: "success",
-      position: "top",
-      duration: 3000,
-      isClosable: true,
-    });
+      toast({
+        title: "Commnet Added",
+
+        status: "success",
+        position: "top",
+        duration: 3000,
+        isClosable: true,
+      });
+    }
   }
   return (
     <Card pb={4}>
@@ -104,34 +118,34 @@ const SigleBlog = ({ data }) => {
         <Box>
           <Button
             ml={"20px"}
-            onClick={getComments}
+            onClick={() => getComments(data._id)}
             size={"sm"}
             fontSize="sm"
             leftIcon={<BiChat />}
             colorScheme="green"
           >
-            Comments {commnet}
+            Comments {commnetData.length}
           </Button>
-          <Collapse in={isOpen} animateOpacity>
-            <Box mt="4" rounded="md" shadow="md">
-              {comments.map((el, i) => {
-                return <CommentCard key={i} />;
-              })}
-            </Box>
-            <Box>
+          <Collapse in={isOpen} animateOpacity border="1px solid white">
+            <Box ml={4} mt="4">
               <Flex align={"center"}>
-                <Input />
+                <Input ref={NewCommnet} placeholder="Leave a comment" />
                 <Button
-                  onClick={addComment}
-                  p={4}
+                  onClick={() => addComment(data._id)}
+                  // p={4}
                   ml="10px"
                   colorScheme={"green"}
                   size="sm"
                   fontSize={"sm"}
                 >
-                  Commnet
+                  Leave
                 </Button>
               </Flex>
+            </Box>
+            <Box mt="4" rounded="md" shadow="md">
+              {commnetData.map((el, i) => {
+                return <CommentCard data={el} key={i} />;
+              })}
             </Box>
           </Collapse>
         </Box>

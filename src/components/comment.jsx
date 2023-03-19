@@ -1,6 +1,9 @@
 import React from "react";
 import { Box, Text, Flex, Spacer, Avatar } from "@chakra-ui/react";
-const CommentCard = () => {
+const CommentCard = ({ data }) => {
+  // console.log(data);
+  const { comment, user_id } = data;
+  const { name } = user_id;
   return (
     <Box
       px={"30px"}
@@ -19,13 +22,13 @@ const CommentCard = () => {
           src={null}
         />
         <Text ml={"5px"} fontSize={"sm"}>
-          Praful Jadhao
+          {name}
         </Text>
         <Spacer />
         <Text fontSize={"xs"}>3 days ago</Text>
       </Flex>
       <Text ml={6} mt="2" fontSize={"xs"}>
-        Good !
+        {comment}
       </Text>
     </Box>
   );
