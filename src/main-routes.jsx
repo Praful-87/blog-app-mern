@@ -1,6 +1,6 @@
-import Homepage from "./homepage";
 import { Routes, Route } from "react-router-dom";
-import Account from "./account";
+import Account from "./pages/account";
+import Homepage from "./pages/homepage";
 export default function MainRoutes() {
   return (
     <>

@@ -32,11 +32,10 @@ import { ArrowBackIcon } from "@chakra-ui/icons";
 import { BiLike, BiChat, BiShare } from "react-icons/bi";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import React, { useState } from "react";
-import CommentCard from "./comment";
 import axios from "axios";
-
+import CommentCard from "./comment";
 const SigleBlog = ({ data }) => {
-  const [usedOnce,setUsedOnce]=useState(false)
+  const [usedOnce, setUsedOnce] = useState(false);
   const toast = useToast();
   const { blog, user_id } = data;
   const { name } = user_id;
@@ -55,7 +54,7 @@ const SigleBlog = ({ data }) => {
       let res = await axios.get(
         "http://localhost:8000/comment/6415e531af5c1bb2bbff5921/"
       );
-      let data = await res.data
+      let data = await res.data;
       console.log(data);
     } catch (err) {
       console.log(err.message);

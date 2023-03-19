@@ -26,10 +26,9 @@ import {
   TriangleDownIcon,
   InfoIcon,
 } from "@chakra-ui/icons";
-import Register from "./register";
-import Login from "./login";
-import logo from "./logo/Notify.png";
-
+// import logo from "./logo/Notify.png";
+import logo from "../logo/Notify.png";
+import Loign from "../pages/login";
 export default function Navbar() {
   const { colorMode, toggleColorMode } = useColorMode();
 

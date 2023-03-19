@@ -3,9 +3,9 @@ import { Heading, Hide, Box, Show, Button, Stack } from "@chakra-ui/react";
 import axios from "axios";
 import { useEffect } from "react";
 import { AddIcon } from "@chakra-ui/icons";
-import SigleBlog from "./card";
-import { getData } from "./Redux/App/action";
+import { getData } from "../Redux/App/action";
 import { useDispatch, useSelector } from "react-redux";
+import SigleBlog from "../components/card";
 export default function Homepage() {
   const dispatch = useDispatch();
   const data = useSelector((state) => state.AppReducer.data);
