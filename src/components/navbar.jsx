@@ -30,10 +30,13 @@ import {
 import logo from "../logo/Notify.png";
 import Login from "../pages/login";
 import Register from "../pages/register";
+import { useSelector } from "react-redux";
 export default function Navbar() {
   const { colorMode, toggleColorMode } = useColorMode();
 
-  const isAuth = false;
+  const isAuth = useSelector((state) => state.AuthReducer.isAuth);
+  const user_details = useSelector((state) => state.AuthReducer.user_details);
+  // console.log(isAuth);
   return (
     <>
       <Flex
@@ -79,7 +82,7 @@ export default function Navbar() {
 
                 <Menu>
                   <MenuButton>
-                    Praful Jadaho
+                    {user_details[0].name}
                     <ChevronDownIcon />
                   </MenuButton>
 

@@ -72,7 +72,7 @@ const SigleBlog = ({ data }) => {
         blog_id,
         comment: commnet_data,
       };
-      console.log(payload);
+      // console.log(payload);
 
       toast({
         title: "Commnet Added",

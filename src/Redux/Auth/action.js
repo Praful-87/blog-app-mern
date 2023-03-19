@@ -51,14 +51,23 @@ export const register = (payload) => async (dispatch) => {
   }
 };
 
-export const login = (payload) => (dispatch) => {
+export const login = (payload) => async (dispatch) => {
   dispatch(loginRequest());
-  return axios
-    .post(`${url}/login`, payload)
-    .then((res) => {
-      dispatch(loginSuccess());
-    })
-    .catch((err) => {
-      dispatch(loginFailure());
-    });
+  try {
+    let res = await axios.post(`${url}/user/login`, payload);
+    dispatch(
+      loginSuccess({
+        token: res.data.token,
+        user_details: res.data.user_details,
+      })
+    );
+    // localStorage.setItem("userId", res.data.user_id);
+    // console.log(res.data.token);
+    return { res: true, msg: res.data.msg };
+  } catch (err) {
+    dispatch(loginFailure());
+    // console.log(err.response.data.msg);
+    return { res: false, msg: err.response.data.msg };
+  }
+  // console.log(payload)
 };

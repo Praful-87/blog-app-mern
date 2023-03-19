@@ -84,7 +84,7 @@ export default function Register() {
   }
   return (
     <>
-      <Button size="sm" onClick={onOpen} colorScheme="blue" variant="outline">
+      <Button size="sm" onClick={onOpen} colorScheme="blue" variant="solid">
         Regiser
       </Button>
       <Modal
