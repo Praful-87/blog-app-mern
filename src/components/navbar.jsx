@@ -28,11 +28,12 @@ import {
 } from "@chakra-ui/icons";
 // import logo from "./logo/Notify.png";
 import logo from "../logo/Notify.png";
-import Loign from "../pages/login";
+import Login from "../pages/login";
+import Register from "../pages/register";
 export default function Navbar() {
   const { colorMode, toggleColorMode } = useColorMode();
 
-  const isAuth = true;
+  const isAuth = false;
   return (
     <>
       <Flex

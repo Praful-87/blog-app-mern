@@ -9,10 +9,9 @@ const registerRequest = () => {
     type: types.REGISTER_REQUEST,
   };
 };
-const registerSuccess = (payload) => {
+const registerSuccess = () => {
   return {
     type: types.REGISTER_SUCCESS,
-    payload,
   };
 };
 const registerFailure = () => {
@@ -38,16 +37,18 @@ const loginFailure = () => {
   };
 };
 
-export const register = (payload) => (dispatch) => {
+export const register = (payload) => async (dispatch) => {
   dispatch(registerRequest());
-  return axios
-    .post(`${url}/register`, payload)
-    .then((res) => {
-      dispatch(registerSuccess());
-    })
-    .catch((err) => {
-      dispatch(registerFailure());
-    });
+  try {
+    let res = await axios.post(`${url}/user/register`, payload);
+    dispatch(registerSuccess());
+    // console.log(res);
+    return { res: true, msg: res.data.msg };
+  } catch (err) {
+    dispatch(registerFailure());
+    // console.log(err.response.data.msg);
+    return { res: false, msg: err.response.data.msg };
+  }
 };
 
 export const login = (payload) => (dispatch) => {

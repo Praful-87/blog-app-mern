@@ -15,15 +15,18 @@ import {
   InputGroup,
   InputRightElement,
   IconButton,
-  Tooltip
+  Tooltip,
 } from "@chakra-ui/react";
 import { ViewOffIcon, ViewIcon } from "@chakra-ui/icons";
 import axios from "axios";
 import { useRef, useState } from "react";
+import { register } from "../Redux/Auth/action";
+import { useDispatch } from "react-redux";
 export default function Register() {
+  const dispatch = useDispatch();
   const [show, setShow] = useState(true);
   const handleClick = () => setShow(!show);
-
+  // register
   const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [isLoading, setLoading] = useState(false);
@@ -34,43 +37,38 @@ export default function Register() {
   const Password = useRef(null);
   async function hadelSubmit() {
     setLoading(true);
-    let username = Username.current.value;
+    let name = Username.current.value;
     let email = Email.current.value;
     let password = Password.current.value;
-    if (username && email && password) {
+    if (name && email && password) {
       let payload = {
-        username,
+        name,
         email,
-        password
+        password,
       };
       // console.log(payload);
-      try {
-        let res = await axios.post(
-          "http://localhost:8000/user/register",
-          payload
-        );
+      let { res, msg } = await dispatch(register(payload));
+      // console.log(msg);
+      if (res) {
         toast({
           title: "Registered",
           status: "success",
-          description: "Your account has been created successfully",
+          description: msg,
           position: "top",
           duration: 3000,
-          isClosable: true
+          isClosable: true,
         });
         setLoading(false);
-        console.log("res:", res);
-      } catch (err) {
+      } else {
         toast({
           title: "Failed",
           status: "error",
-          description: "Registration Failed",
+          description: msg,
           position: "top",
           duration: 3000,
-          isClosable: true
+          isClosable: true,
         });
         setLoading(false);
-
-        console.log("error:", err.message);
       }
     } else {
       toast({
@@ -79,7 +77,7 @@ export default function Register() {
         description: "Please Fill The Details",
         position: "top",
         duration: 3000,
-        isClosable: true
+        isClosable: true,
       });
       setLoading(false);
     }
@@ -115,16 +113,16 @@ export default function Register() {
                 <Input
                   ref={Password}
                   pr="4.5rem"
-                  type={show ? "text" : "password"}
+                  type={!show ? "text" : "password"}
                   placeholder="Enter password"
                 />
                 <InputRightElement>
                   <>
                     <Tooltip
-                      label={show ? "Hide Password" : "See Password"}
+                      label={!show ? "Hide Password" : "See Password"}
                       fontSize="md"
                     >
-                      {show ? (
+                      {!show ? (
                         <IconButton
                           onClick={handleClick}
                           colorScheme="blue"
