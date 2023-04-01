@@ -3,33 +3,22 @@ import { Heading, Hide, Box, Show, Button, Stack } from "@chakra-ui/react";
 import axios from "axios";
 import { useEffect } from "react";
 import { AddIcon } from "@chakra-ui/icons";
-import { getData } from "../Redux/App/action";
+import { getComment, getData } from "../Redux/App/action";
 import { useDispatch, useSelector } from "react-redux";
 import SigleBlog from "../components/card";
+import { Link } from "react-router-dom";
 export default function Homepage() {
   const dispatch = useDispatch();
   const data = useSelector((state) => state.AppReducer.data);
-  // console.log(data);
-  const isAuth = true;
-  // const data = [1, 1, 1, 1];
-
+  // const comments = useSelector((state) => state.AppReducer.comments);
+  // console.log(comments);
   useEffect(() => {
     dispatch(getData);
+    // dispatch(getComment);
   }, []);
   return (
     <Box>
-      <Button
-        size={"sm"}
-        fontSize={"sm"}
-        colorScheme={"facebook"}
-        pos={"fixed"}
-        top="80px"
-        right="10px"
-        zIndex={400}
-        leftIcon={<AddIcon />}
-      >
-        New Blog
-      </Button>
+      <Link to={"/newblog"}></Link>
       <Stack>
         {data.length > 0 &&
           data.map((el) => {

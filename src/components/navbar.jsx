@@ -10,104 +10,99 @@ import {
   MenuButton,
   MenuList,
   MenuItem,
-  Heading,
   Hide,
-  Icon,
-  Center,
   Image,
+  Button,
   Text,
+  Heading,
+  MenuGroup,
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import {
   ChevronDownIcon,
   MoonIcon,
   SunIcon,
-  ArrowBackIcon,
-  TriangleDownIcon,
-  InfoIcon,
+  ExternalLinkIcon,
+  RepeatIcon,
+  EditIcon,
+  AddIcon,
 } from "@chakra-ui/icons";
-// import logo from "./logo/Notify.png";
-import logo from "../logo/Notify.png";
-import Login from "../pages/login";
-import Register from "../pages/register";
+import { MdOutlineAccountCircle } from "react-icons/md";
 import { useSelector } from "react-redux";
-export default function Navbar() {
-  const { colorMode, toggleColorMode } = useColorMode();
 
-  const isAuth = useSelector((state) => state.AuthReducer.isAuth);
-  const user_details = useSelector((state) => state.AuthReducer.user_details);
-  // console.log(isAuth);
+export default function Navbar() {
+  const authenticaton = JSON.parse(localStorage.getItem("authenticaton")) || {};
+  const { colorMode, toggleColorMode } = useColorMode();
+  const auth = useSelector((state) => state.AuthReducer.isAuth);
+  const isAuth = Object.keys(authenticaton).length > 0 ? true : false;
+  // console.log(user);
+  const user = authenticaton?.user;
+
+  // console.log(user);
+  // console.log(Object.keys(authenticaton).length);
+
   return (
     <>
       <Flex
+        pos="sticky"
+        top={0}
+        right={0}
+        zIndex="500"
         px={4}
         h="70px"
         align="center"
         w="full"
-        pos="sticky"
-        top="0"
-        left="0"
-        zIndex={500}
         bgGradient="linear(to-l,#7fc9df,#d038eb,#7fc9df)"
       >
-        <Link to="">
-          <Flex align={"center"}>
-            {/* Notify me. */}
-            <Image
-              borderRadius="full"
-              boxSize="50px"
-              src={logo}
-              alt="Dan Abramov"
-            />
-            <Box ml={1}>
-              <Heading size="lg" color={"white"}>
-                Notify Me.
-              </Heading>
-              <Text fontSize="xs">Better for now</Text>
-            </Box>
-          </Flex>
-        </Link>
+        <Box>
+          <Link to="/">
+            <Flex align={"center"} gap="4px">
+              <Image
+                h="40px"
+                src="https://res.cloudinary.com/doaedvl5s/image/upload/v1679925001/Notify_yhvgkj.png"
+              />
+              <Text color={"white"} fontSize={"sm"}>
+                Norify me.
+              </Text>
+            </Flex>
+          </Link>
+        </Box>
         <Spacer />
         <HStack>
           <>
             {isAuth ? (
               <>
-                <Hide below="md">
-                  <Avatar
-                    size="md"
-                    name="Ryan Florence"
-                    src="https://avatars.githubusercontent.com/u/103850217?v=4"
-                  />
-                </Hide>
+                <Link to="/newblog">
+                  <Button leftIcon={<AddIcon />} colorScheme={"teal"}>
+                    New
+                  </Button>
+                </Link>
 
                 <Menu>
                   <MenuButton>
-                    {user_details[0].name}
-                    <ChevronDownIcon />
+                    <Avatar size="md" name={user?.name} src={user?.photo} />
                   </MenuButton>
-
                   <MenuList>
-                    <MenuItem>
+                    <MenuGroup title="Profile">
                       <Link to="/account">
-                        {" "}
-                        <InfoIcon />
-                        &nbsp; Account
+                        <MenuItem>My Account</MenuItem>
                       </Link>
-                    </MenuItem>
-                    <MenuItem>
-                      <Link to="/">
-                        {" "}
-                        <ArrowBackIcon />
-                        &nbsp; Logout
-                      </Link>
-                    </MenuItem>
+                    </MenuGroup>
                   </MenuList>
                 </Menu>
               </>
             ) : (
               <>
-                <Login />
-                <Register />
+                <Link to="/login">
+                  <Button size="sm" colorScheme={"twitter"} variant="outline">
+                    Login
+                  </Button>
+                </Link>
+                <Link to="/signup">
+                  <Button size="sm" colorScheme={"twitter"}>
+                    Sign Up
+                  </Button>
+                </Link>
               </>
             )}
           </>
@@ -117,7 +112,7 @@ export default function Navbar() {
               <IconButton
                 size="sm"
                 onClick={toggleColorMode}
-                colorScheme="blue"
+                colorScheme="twitter"
                 aria-label="Search database"
                 icon={<SunIcon />}
               />
@@ -125,7 +120,7 @@ export default function Navbar() {
               <IconButton
                 size="sm"
                 onClick={toggleColorMode}
-                colorScheme="blue"
+                colorScheme="twitter"
                 aria-label="Search database"
                 icon={<MoonIcon />}
               />

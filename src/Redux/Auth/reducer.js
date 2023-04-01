@@ -2,8 +2,6 @@ import * as types from "./actionTypes";
 const initialState = {
   isAuth: false,
   token: "",
-
-  user_details: [],
   isLoading: false,
   isError: false,
 };
@@ -37,10 +35,27 @@ export const reducer = (oldState = initialState, action) => {
         ...oldState,
         isLoading: false,
         isAuth: true,
-        token: payload.token,
-        user_details:payload.user_details
+        token: payload,
+        isError: false,
       };
     case types.LOGIN_FAILURE:
+      return {
+        ...oldState,
+        isLoading: false,
+        isError: true,
+      };
+    case types.UPDATE_PROFILE_REQUEST:
+      return {
+        ...oldState,
+        isLoading: true,
+      };
+    case types.UPDATE_PROFILE_SUCCESS:
+      return {
+        ...oldState,
+        isLoading: false,
+        isError: false,
+      };
+    case types.UPDATE_PROFILE_FAILURE:
       return {
         ...oldState,
         isLoading: false,

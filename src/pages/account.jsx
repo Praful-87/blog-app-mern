@@ -2,11 +2,7 @@ import {
   Heading,
   HStack,
   Stack,
-  VStack,
-  IconButton,
-  Container,
   Flex,
-  Text,
   FormControl,
   FormLabel,
   Input,
@@ -14,16 +10,7 @@ import {
   Image,
   Center,
   Avatar,
-  AvatarBadge,
   Box,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
-  ModalBody,
-  ModalCloseButton,
-  useDisclosure,
   Button,
   Tooltip,
   useToast,
@@ -31,59 +18,97 @@ import {
 import { ArrowBackIcon, EditIcon, SettingsIcon } from "@chakra-ui/icons";
 import { Link, useLocation } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
+import { updateProfile } from "../Redux/Auth/action";
+
 export default function Account() {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const authenticaton =
+    JSON.parse(localStorage.getItem("authenticaton")) || undefined;
+  const [newImage, setNewImage] = useState("");
   const toast = useToast();
-  const initialRef = useRef(null);
   const Username = useRef(null);
-  const Email = useRef(null);
   const Password = useRef(null);
-  const finalRef = useRef(null);
   const [editMode, setEditMode] = useState(false);
-  const token = useSelector((state) => state.AuthReducer.token);
-  const user_details = useSelector((state) => state.AuthReducer.user_details);
-
-  // console.log(user_details);
-
+  const [loading, setLoading] = useState(false);
+  const user = authenticaton?.user;
+  const dispatch = useDispatch();
+  // console.log(user);
+  const url = "http://localhost:8000";
   function handelFocusMode() {
     setEditMode(true);
     Username.current.focus();
   }
-  function handelUpdate() {
-    let username = Username.current.value;
-    let email = Email.current.value;
-    let password = Password.current.value;
-    if (username && email && password) {
+  function imageUploadController() {
+    if (newImage) {
+      const formData = new FormData();
+      formData.append("name", Username.current.value);
+      formData.append("profile_photo", newImage);
+
+      return formData;
+    } else {
       let payload = {
-        username,
-        email,
-        password,
+        name: Username.current.value,
       };
-      toast({
-        title: "Updated",
-        description: "Profile updated successfully",
-        status: "success",
-        duration: 2000,
-        isClosable: true,
-        position: "top",
-      });
-      setEditMode(false);
-      // console.log(payload);
+      return payload;
     }
   }
 
+  async function handelUpdate() {
+    let name = Username.current.value;
+    // console.log(name, newImage);
+    if (name) {
+      setLoading(true);
+      try {
+        let payload = imageUploadController();
+        await dispatch(updateProfile(payload, user._id));
+        toast({
+          title: "Updated",
+          status: "success",
+          position: "top",
+        });
+        let result = await axios.get(`${url}/user/profile/${user._id}`);
+        let data = await result;
+        let deatails = data.data.result;
+        localStorage.setItem(
+          "authenticaton",
+          JSON.stringify({
+            token: authenticaton.token,
+            user: deatails,
+          })
+        );
+        // console.log(deatails);
+        setLoading(false);
+      } catch (error) {
+        toast({
+          title: "Failed to Update",
+          status: "error",
+          position: "top",
+        });
+        console.log(error.message);
+        setLoading(false);
+      }
+    } else {
+      toast({
+        title: "Empty Field",
+        description: "Username cannot be empty",
+        status: "warning",
+        position: "top",
+      });
+      console.log(error.message);
+      setLoading(false);
+    }
+  }
   return (
     <Box>
       {/* <Heading>Hwllo</Heading> */}
-      {user_details.length > 0 && (
+      {true && (
         <Flex
           width="90%"
           margin="auto"
           mt={8}
           gap="30px"
-          direction={{ base: "column", lg: "row" }}
+          direction={["column", "column", "column", "row", "row"]}
         >
           <Stack
             shadow={"md"}
@@ -94,7 +119,9 @@ export default function Account() {
             <Image
               objectFit={"fill"}
               h="100%"
-              src="https://www.blogger.com/about/img/social/facebook-1200x630.jpg"
+              src={
+                "https://www.blogger.com/about/img/social/facebook-1200x630.jpg"
+              }
               alt="Avatar"
             />
           </Stack>
@@ -105,56 +132,21 @@ export default function Account() {
               <SettingsIcon /> <Heading size="md">Account settings</Heading>
             </HStack>
             <Heading size="md">Profile Photo</Heading>
+
             <Center>
               <Avatar
                 size="2xl"
                 name="Segun Adebayo"
-                src="https://avatars.githubusercontent.com/u/103850217?v=4"
+                src={user.photo}
                 alt="User name"
-              >
-                <AvatarBadge boxSize="1em">
-                  <Tooltip
-                    hasArrow
-                    label="Upload new Profile Picture"
-                    aria-label="A tooltip"
-                  >
-                    <IconButton
-                      onClick={onOpen}
-                      rounded="full"
-                      colorScheme="blue"
-                      aria-label="Search database"
-                      icon={<EditIcon />}
-                    />
-                  </Tooltip>
-                </AvatarBadge>
-              </Avatar>
-
-              <Modal
-                initialFocusRef={initialRef}
-                finalFocusRef={finalRef}
-                isOpen={isOpen}
-                onClose={onClose}
-              >
-                <ModalOverlay />
-                <ModalContent>
-                  <ModalHeader>Upload New Profile Picture</ModalHeader>
-                  <ModalCloseButton />
-                  <ModalBody pb={6}>
-                    <FormControl>
-                      <FormLabel>Select</FormLabel>
-                      <Input type="file" />
-                    </FormControl>
-                  </ModalBody>
-
-                  <ModalFooter>
-                    <Button colorScheme="blue" mr={3}>
-                      Upload
-                    </Button>
-                    <Button onClick={onClose}>Cancel</Button>
-                  </ModalFooter>
-                </ModalContent>
-              </Modal>
+              />
             </Center>
+            {/* <Center>
+              <FormLabel cursor="pointer">
+                <Icon color={"white"} as={EditIcon} boxSize={"6"} />
+                <Input display={"none"} type="file" />
+              </FormLabel>
+            </Center> */}
             <Stack spacing="30px">
               <FormControl>
                 <FormLabel>User Name</FormLabel>
@@ -162,7 +154,7 @@ export default function Account() {
                   isDisabled={!editMode}
                   variant="filled"
                   ref={Username}
-                  value={user_details[0].name}
+                  defaultValue={user.name}
                 />
               </FormControl>
               <FormControl>
@@ -175,8 +167,7 @@ export default function Account() {
                   <Input
                     isDisabled={true}
                     variant="filled"
-                    ref={Email}
-                    value={user_details[0].email}
+                    defaultValue={user.email}
                   />
                 </Tooltip>
               </FormControl>
@@ -186,14 +177,30 @@ export default function Account() {
                   isDisabled={!editMode}
                   variant="filled"
                   ref={Password}
-                  value={user_details[0].password}
                   type="password"
+                  defaultValue={user.name}
                 />
               </FormControl>
-
+              {editMode && (
+                <FormLabel
+                  p="2"
+                  bg="green.400"
+                  width={"fit-content"}
+                  cursor="pointer"
+                  rounded="5px"
+                >
+                  Change Profile photo
+                  <Input
+                    type="file"
+                    display={"none"}
+                    onChange={(e) => setNewImage(e.target.files[0])}
+                  />
+                </FormLabel>
+              )}
               <>
                 {editMode ? (
                   <Button
+                    isLoading={loading}
                     onClick={handelUpdate}
                     w={"min-content"}
                     fontSize={"xs"}

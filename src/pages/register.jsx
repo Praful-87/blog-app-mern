@@ -1,81 +1,86 @@
 import {
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
-  ModalBody,
-  ModalCloseButton,
+  Container,
   Button,
   FormControl,
   Input,
   FormLabel,
-  useDisclosure,
-  useToast,
+  Box,
   InputGroup,
+  InputLeftElement,
+  Center,
+  Text,
   InputRightElement,
   IconButton,
-  Tooltip,
+  Flex,
+  useToast,
 } from "@chakra-ui/react";
-import { ViewOffIcon, ViewIcon } from "@chakra-ui/icons";
-import axios from "axios";
+import { Link, useNavigate } from "react-router-dom";
+import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
+import { AiOutlineMail } from "react-icons/ai";
+import { BsShieldLockFill } from "react-icons/bs";
+import { BiUserCircle } from "react-icons/bi";
 import { useRef, useState } from "react";
-import { register } from "../Redux/Auth/action";
 import { useDispatch } from "react-redux";
+import { register } from "../Redux/Auth/action";
 export default function Register() {
   const dispatch = useDispatch();
-  const [show, setShow] = useState(true);
-  const handleClick = () => setShow(!show);
-  // register
+  const navigate = useNavigate();
+  const [show, setShow] = useState(false);
   const toast = useToast();
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const [isLoading, setLoading] = useState(false);
-  const initialRef = useRef(null);
-  const finalRef = useRef(null);
-  const Username = useRef(null);
+  const Name = useRef(null);
   const Email = useRef(null);
   const Password = useRef(null);
-  async function hadelSubmit() {
-    setLoading(true);
-    let name = Username.current.value;
+  const [img, setImg] = useState("");
+  console.log(img);
+  const [isLoading, setLoading] = useState(false);
+  async function handelSubmit() {
+    let name = Name.current.value;
     let email = Email.current.value;
     let password = Password.current.value;
-    if (name && email && password) {
+    if (name && email && password && img) {
+      setLoading(true);
+      // setLoading(false);
+      const formData = new FormData();
+      formData.append("name", name);
+      formData.append("email", email);
+      formData.append("password", password);
+      formData.append("profile_photo", img);
       let payload = {
         name,
         email,
         password,
+        // profile_photo
       };
-      // console.log(payload);
-      let { res, msg } = await dispatch(register(payload));
-      // console.log(msg);
+      let result = await dispatch(register(formData));
+      console.log(result);
+      let { res, msg } = result;
       if (res) {
+        setLoading(false);
         toast({
-          title: "Registered",
+          title: "Registration Successfull",
+          description: "We have created account for you",
+          position: "top",
           status: "success",
-          description: msg,
-          position: "top",
           duration: 3000,
           isClosable: true,
         });
-        setLoading(false);
+        navigate("/login");
       } else {
+        setLoading(false);
         toast({
-          title: "Failed",
-          status: "error",
+          title: "Error",
           description: msg,
           position: "top",
+          status: "error",
           duration: 3000,
           isClosable: true,
         });
-        setLoading(false);
       }
     } else {
       toast({
-        title: "Empty Data",
-        status: "warning",
-        description: "Please Fill The Details",
+        title: "Empty Filed is not allowed",
         position: "top",
+        status: "warning",
         duration: 3000,
         isClosable: true,
       });
@@ -83,82 +88,164 @@ export default function Register() {
     }
   }
   return (
-    <>
-      <Button size="sm" onClick={onOpen} colorScheme="blue" variant="solid">
-        Regiser
-      </Button>
-      <Modal
-        initialFocusRef={initialRef}
-        finalFocusRef={finalRef}
-        isOpen={isOpen}
-        onClose={onClose}
+    <Box
+      display="flex"
+      justify="center"
+      alignItems="center"
+      // h="100vh"
+      w="100vw"
+      // bgGradient="linear(to-r,#b70ef0,#15a9e8)"
+    >
+      <Container
+        mt="50px"
+        shadow="md"
+        p={6}
+        rounded="md"
+        h="fit-content"
+        maxW={"md"}
       >
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Create your account</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody pb={6}>
+        <Text
+          bgGradient="linear(to-l, #7928CA, #FF0080)"
+          bgClip="text"
+          fontSize="xl"
+          fontWeight="extrabold"
+          mb="20px"
+        >
+          Create an account
+        </Text>
+        <Flex direction="column" gap="25px">
+          <FormControl isRequired>
+            <FormLabel fontSize="sm">Username</FormLabel>
+            <InputGroup>
+              <InputLeftElement
+                pointerEvents="none"
+                children={<BiUserCircle />}
+              />
+              <Input
+                ref={Name}
+                border="none"
+                borderBottom="1px solid gray"
+                rounded="none"
+                fontSize="sm"
+                type="text"
+                placeholder="Type Your Name"
+              />
+            </InputGroup>
+          </FormControl>
+          <FormControl isRequired>
+            <FormLabel fontSize="sm">Email</FormLabel>
+            <InputGroup>
+              <InputLeftElement
+                pointerEvents="none"
+                children={<AiOutlineMail />}
+              />
+              <Input
+                ref={Email}
+                border="none"
+                borderBottom="1px solid gray"
+                rounded="none"
+                fontSize="sm"
+                type="email"
+                placeholder="Type Your Email"
+              />
+            </InputGroup>
+          </FormControl>
+          <FormControl isRequired>
+            <FormLabel fontSize="sm">Password</FormLabel>
+            <InputGroup>
+              <InputLeftElement
+                pointerEvents="none"
+                children={<BsShieldLockFill />}
+              />
+              <Input
+                ref={Password}
+                border="none"
+                borderBottom="1px solid gray"
+                rounded="none"
+                fontSize="sm"
+                type={show ? "text" : "password"}
+                placeholder="Type Your Password"
+                _focus={{ outline: "none" }}
+              />
+              <>
+                {!show ? (
+                  <InputRightElement>
+                    <IconButton
+                      colorScheme="gray"
+                      onClick={() => setShow(!show)}
+                      icon={<ViewIcon />}
+                    />
+                  </InputRightElement>
+                ) : (
+                  <InputRightElement>
+                    <IconButton
+                      colorScheme="gray"
+                      onClick={() => setShow(!show)}
+                      icon={<ViewOffIcon />}
+                    />
+                  </InputRightElement>
+                )}
+              </>
+            </InputGroup>
+          </FormControl>
+          <Center>
             <FormControl>
-              <FormLabel>Username</FormLabel>
-              <Input ref={Username} placeholder="Enter Name" />
-            </FormControl>
-
-            <FormControl mt={4}>
-              <FormLabel>Email</FormLabel>
-              <Input ref={Email} placeholder="Enter Email" />
-            </FormControl>
-            <FormControl mt={4}>
-              <FormLabel>Password</FormLabel>
-              <InputGroup>
+              <FormLabel bg={"blue.300"} rounded="md" p={2} width="fit-content">
+                Upload a profile pricture
                 <Input
-                  ref={Password}
-                  pr="4.5rem"
-                  type={!show ? "text" : "password"}
-                  placeholder="Enter password"
+                  onChange={(e) => setImg(e.target.files[0])}
+                  display={"none"}
+                  type="file"
                 />
-                <InputRightElement>
-                  <>
-                    <Tooltip
-                      label={!show ? "Hide Password" : "See Password"}
-                      fontSize="md"
-                    >
-                      {!show ? (
-                        <IconButton
-                          onClick={handleClick}
-                          colorScheme="blue"
-                          aria-label="Search database"
-                          icon={<ViewOffIcon />}
-                        />
-                      ) : (
-                        <IconButton
-                          onClick={handleClick}
-                          colorScheme="blue"
-                          aria-label="Search database"
-                          icon={<ViewIcon />}
-                        />
-                      )}
-                    </Tooltip>
-                  </>
-                </InputRightElement>
-              </InputGroup>
+              </FormLabel>
             </FormControl>
-          </ModalBody>
-
-          <ModalFooter>
+          </Center>
+          <Center>
             <Button
-              onClick={hadelSubmit}
-              colorScheme="blue"
-              mr={3}
               isLoading={isLoading}
-              loadingText="Submitting"
-              variant="outline"
+              onClick={() => handelSubmit()}
+              rounded="md"
+              // size="sm"
+              fontSize="sm"
+              textTransform="capitalize"
+              // w="50%"
+              w="full"
+              textAlign="center"
+              colorScheme="twitter"
+              // bgGradient="linear(to-l, #7928CA, #FF0080)"
             >
-              Submit
+              Create Account
             </Button>
-            <Button onClick={onClose}>Cancel</Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
-    </>
+          </Center>
+
+          <Center>
+            <Text
+              // bgGradient="linear(to-l, #7928CA, #FF0080)"
+              // bgClip="text"
+              fontSize="sm"
+              fontWeight="extrabold"
+            >
+              Allready have an account?
+            </Text>
+          </Center>
+          <Link to="/login">
+            <Center>
+              <Button
+                rounded="md"
+                // size="sm"
+                fontSize="sm"
+                textTransform="capitalize"
+                // w="50%"
+                w="full"
+                textAlign="center"
+                colorScheme="whatsapp"
+              >
+                Login
+              </Button>{" "}
+            </Center>
+          </Link>
+        </Flex>
+      </Container>
+    </Box>
   );
 }

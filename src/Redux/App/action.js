@@ -20,6 +20,53 @@ const getDataFailure = () => {
   };
 };
 
+const addDataRequest = () => {
+  return {
+    type: types.ADD_DATA_REQUEST,
+  };
+};
+const addDataSuccess = () => {
+  return {
+    type: types.ADD_DATA_SUCCESS,
+  };
+};
+const addDataFailure = () => {
+  return {
+    type: types.ADD_DATA_FAILURE,
+  };
+};
+
+const deleteDataRequest = () => {
+  return {
+    type: types.DELETE_DATA_REQUEST,
+  };
+};
+const deleteDataSuccess = () => {
+  return {
+    type: types.DELETE_DATA_SUCCESS,
+  };
+};
+const deleteDataFailure = () => {
+  return {
+    type: types.DELETE_DATA_FAILURE,
+  };
+};
+
+const updateDataRequest = () => {
+  return {
+    type: types.UPDATE_DATA_REQUEST,
+  };
+};
+const updateDataSuccess = () => {
+  return {
+    type: types.UPDATE_DATA_SUCCESS,
+  };
+};
+const updateDataFailure = () => {
+  return {
+    type: types.UPDATE_DATA_FAILURE,
+  };
+};
 export const getData = (dispatch) => {
   dispatch(getDataRequest());
   return axios
@@ -30,5 +77,65 @@ export const getData = (dispatch) => {
     })
     .catch((err) => {
       dispatch(getDataFailure());
+    });
+};
+
+export const getComments = (id) => {
+  return axios
+    .get(`${url}/comment/${id}`)
+    .then((res) => {
+      // console.log(res);
+      return res.data;
+    })
+    .catch((err) => {
+      console.log(err.message);
+      return [];
+    });
+};
+
+export const deleteData = (id) => (dispatch) => {
+  dispatch(deleteDataRequest());
+  return axios
+    .delete(`${url}/blog/delete/${id}`)
+    .then((res) => {
+      // console.log(res);
+      dispatch(deleteDataSuccess());
+      dispatch(getData);
+    })
+    .catch((err) => {
+      console.log(err.message);
+      dispatch(deleteDataFailure());
+    });
+};
+
+export const addData = (formData) => (dispatch) => {
+  dispatch(addDataRequest());
+  return axios
+    .post(`${url}/blog/create`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    })
+    .then((res) => {
+      // console.log(res);
+      dispatch(addDataSuccess());
+      dispatch(getData);
+    })
+    .catch((err) => {
+      dispatch(addDataFailure());
+    });
+};
+
+export const updateData = (formData, id) => (dispatch) => {
+  dispatch(updateDataRequest());
+  return axios
+    .patch(`${url}/blog/update/${id}`, formData)
+    .then((res) => {
+      // console.log(res);
+      dispatch(updateDataSuccess());
+      dispatch(getData);
+    })
+    .catch((err) => {
+      dispatch(updateDataFailure());
     });
 };

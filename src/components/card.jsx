@@ -1,156 +1,141 @@
 import {
-  Button,
   Flex,
   Box,
   Heading,
   Card,
   CardBody,
-  CardFooter,
   CardHeader,
   Image,
   Text,
   Avatar,
-  IconButton,
-  HStack,
-  Spacer,
-  Center,
   AspectRatio,
-  Stack,
-  Accordion,
-  AccordionItem,
-  AccordionButton,
-  AccordionPanel,
-  AccordionIcon,
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogContent,
+  AlertDialogOverlay,
+  ButtonGroup,
+  Button,
+  Spacer,
   useDisclosure,
-  SlideFade,
-  Collapse,
-  VStack,
-  Input,
-  useToast,
+  Stack,
+  
 } from "@chakra-ui/react";
-import { ArrowBackIcon } from "@chakra-ui/icons";
-import { BiLike, BiChat, BiShare } from "react-icons/bi";
-import { BsThreeDotsVertical } from "react-icons/bs";
-import React, { useRef, useState } from "react";
-import axios from "axios";
+import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
+import { useRef, useState } from "react";
+import { useDispatch } from "react-redux";
+import { deleteData } from "../Redux/App/action";
+import { Link } from "react-router-dom";
 import CommentCard from "./comment";
+
 const SigleBlog = ({ data }) => {
-  const [used, setUsed] = useState(false);
-  const [commnetData, setCommnetData] = useState([]);
-  const NewCommnet = useRef(null);
-  const toast = useToast();
-  // console.log(data)
-  const { blog, user_id } = data;
+  const dispatch = useDispatch();
+  const authenticaton =
+    JSON.parse(localStorage.getItem("authenticaton")) || undefined;
+  const userId = authenticaton?.user._id;
+  let { isOpen, onOpen, onClose } = useDisclosure();
+  const { blog, _id, user_id, image, posted, title } = data;
   const { name } = user_id;
-  // console.log(data);
-  const { isOpen, onToggle } = useDisclosure();
-  const commnet = 2;
-  const posted = "2022-04-03";
-  const post_image =
-    "https://images.unsplash.com/photo-1678662543244-51054fbe49e0?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHx0b3BpYy1mZWVkfDR8NnNNVmpUTFNrZVF8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=60";
-  const profile_image = "https://avatars.githubusercontent.com/u/103850217?v=4";
-  async function getComments(blog_id) {
-    onToggle();
-
-    if (!used) {
-      // console.log(used);
-      try {
-        let res = await axios.get(`http://localhost:8000/comment/${blog_id}/`);
-        let data = await res.data;
-        setCommnetData(data);
-      } catch (err) {
-        console.log(err.message);
-      }
-      setUsed(true);
-    }
+  const cancelRef = useRef();
+  function handelDelete(id) {
+    dispatch(deleteData(id));
+    onClose();
   }
-  function addComment(blog_id) {
-    let commnet_data = NewCommnet.current.value;
-    if (commnet_data) {
-      let payload = {
-        // user_id,
-        blog_id,
-        comment: commnet_data,
-      };
-      // console.log(payload);
 
-      toast({
-        title: "Commnet Added",
-
-        status: "success",
-        position: "top",
-        duration: 3000,
-        isClosable: true,
-      });
-    }
-  }
   return (
-    <Card pb={4}>
-      <CardHeader>
-        <Flex flex="1" gap="4" alignItems="center" flexWrap="wrap">
-          <Avatar name={name} src={profile_image} />
+    <>
+      <Card pb={4} pos="relative">
+        <CardHeader>
+          <Flex flex="1" gap="4" alignItems="center" flexWrap="wrap">
+            <Avatar name={name} src={user_id.photo} />
+
+            <Box>
+              <Heading size="sm">{name} </Heading>
+              <Text mt={1} fontSize="xs">
+                Posted On: {posted}
+              </Text>
+            </Box>
+            <Spacer />
+            {user_id._id === userId && (
+              <ButtonGroup>
+                <Link to={`/edit/${_id}`}>
+                  <Button leftIcon={<EditIcon />} colorScheme={"blue"}>
+                    Edit
+                  </Button>
+                </Link>
+                <Button
+                  leftIcon={<DeleteIcon />}
+                  colorScheme={"red"}
+                  onClick={onOpen}
+                >
+                  Delete
+                </Button>
+                <AlertDialog
+                  isOpen={isOpen}
+                  leastDestructiveRef={cancelRef}
+                  onClose={onClose}
+                >
+                  <AlertDialogOverlay>
+                    <AlertDialogContent>
+                      <AlertDialogHeader fontSize="lg" fontWeight="bold">
+                        Delete
+                      </AlertDialogHeader>
+
+                      <AlertDialogBody>
+                        Are you sure? You want to delete.
+                      </AlertDialogBody>
+
+                      <AlertDialogFooter>
+                        <Button ref={cancelRef} onClick={onClose}>
+                          Cancel
+                        </Button>
+                        <Button
+                          colorScheme="red"
+                          onClick={() => handelDelete(_id)}
+                          ml={3}
+                        >
+                          Delete
+                        </Button>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialogOverlay>
+                </AlertDialog>
+              </ButtonGroup>
+            )}
+          </Flex>
+        </CardHeader>
+
+        <CardBody>
+          <Heading size={"md"} mb="20px" textTransform={"capitalize"}>
+            {" "}
+            {title}{" "}
+          </Heading>
+          <Stack
+            gap="30px"
+            direction={["column", "column", "row", "row", "row"]}
+          >
+            <Image
+              flex={1}
+              
+              // width={"50%"}
+              maxWidth={["100%","100%",'50%','50%','50%']}
+              src={image}
+              alt={name}
+              objectFit="cover"
+            />
+
+            <Text mb='40px' lineHeight={6} flex={1} fontSize="md" fontFamily={"sans-serif"} mt="40px">
+              {blog}
+            </Text>
+          </Stack>
 
           <Box>
-            <Heading size="sm">{name} </Heading>
-            <Text mt={1} fontSize="xs">
-              Posted On: {posted}
-            </Text>
+            <CommentCard blog_id={_id} />
           </Box>
-        </Flex>
-      </CardHeader>
-      <CardBody>
-        <AspectRatio maxW="400px" ratio={4 / 3}>
-          <Image src={post_image} alt={name} objectFit="cover" />
-        </AspectRatio>
-        <Text fontSize="sm" fontFamily={"sans-serif"} mt="40px">
-          {blog}
-        </Text>
-      </CardBody>
-      <CardFooter>
-        {/* <Button
-          size={"sm"}
-          fontSize="sm"
-          leftIcon={<BiLike />}
-          colorScheme="pink"
-        >
-          Like {count}
-        </Button> */}
-        <Box>
-          <Button
-            ml={"20px"}
-            onClick={() => getComments(data._id)}
-            size={"sm"}
-            fontSize="sm"
-            leftIcon={<BiChat />}
-            colorScheme="green"
-          >
-            Comments {commnetData.length}
-          </Button>
-          <Collapse in={isOpen} animateOpacity border="1px solid white">
-            <Box ml={4} mt="4">
-              <Flex align={"center"}>
-                <Input ref={NewCommnet} placeholder="Leave a comment" />
-                <Button
-                  onClick={() => addComment(data._id)}
-                  // p={4}
-                  ml="10px"
-                  colorScheme={"green"}
-                  size="sm"
-                  fontSize={"sm"}
-                >
-                  Leave
-                </Button>
-              </Flex>
-            </Box>
-            <Box mt="4" rounded="md" shadow="md">
-              {commnetData.map((el, i) => {
-                return <CommentCard data={el} key={i} />;
-              })}
-            </Box>
-          </Collapse>
-        </Box>
-      </CardFooter>
-    </Card>
+        </CardBody>
+      </Card>
+    </>
   );
 };
 
