@@ -12,24 +12,25 @@ import {
   Input,
   useToast,
 } from "@chakra-ui/react";
-import { DeleteIcon, EditIcon, ChatIcon } from "@chakra-ui/icons";
+import { ChatIcon } from "@chakra-ui/icons";
 import { getComments } from "../Redux/App/action";
 import axios from "axios";
+import { url } from "../url";
 const CommentCard = ({ blog_id }) => {
   // console.log(blog_id)
   const toast = useToast();
-  const url = "http://localhost:8000";
+
   const [comments, setComments] = useState([]);
-  console.log(comments);
+  // console.log(comments);
   const [used, setUsed] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [commentLoader, setCommentLoader] = useState(false);
   const { isOpen, onToggle } = useDisclosure();
   const newComment = useRef(null);
   const authenticaton =
     JSON.parse(localStorage.getItem("authenticaton")) || undefined;
   const userId = authenticaton?.user._id;
-  // getComments
-  // axios
+
   async function getCommentsByid() {
     if (!used) {
       setLoading(true);
@@ -48,7 +49,7 @@ const CommentCard = ({ blog_id }) => {
   }
   async function leaveComment() {
     if (newComment.current.value) {
-      setLoading(true);
+      setCommentLoader(true);
       let payload = {
         blog_id,
         user_id: userId,
@@ -59,13 +60,13 @@ const CommentCard = ({ blog_id }) => {
 
         let result = await getComments(blog_id);
         setComments(result);
-        newComment.current.value;
+        newComment.current.value = "";
         toast({
           title: "We got your comment",
           status: "success",
           position: "top",
         });
-        setLoading(false);
+        setCommentLoader(false);
       } catch (error) {
         console.log(error.message);
         toast({
@@ -73,7 +74,7 @@ const CommentCard = ({ blog_id }) => {
           status: "error",
           position: "top",
         });
-        setLoading(false);
+        setCommentLoader(false);
       }
     } else {
       toast({
@@ -95,31 +96,40 @@ const CommentCard = ({ blog_id }) => {
       </Button>
       <Collapse in={isOpen} animateOpacity>
         <Box
-          pl="40px"
+          pl={["0px", "0px", "10px", "20px", "40px"]}
           mt="4"
           // bg="teal.500"
           rounded="md"
           shadow="md"
         >
-          <HStack>
-            <Input ref={newComment} maxWidth={"250px"} />
-            <Button
-              isLoading={loading}
-              onClick={leaveComment}
-              colorScheme="green"
-            >
-              Leave Comment
-            </Button>
-          </HStack>
+          {authenticaton && (
+            <HStack mb="40px">
+              <Input ref={newComment} maxWidth={"250px"} />
+              <Button
+                isLoading={commentLoader}
+                onClick={leaveComment}
+                colorScheme="green"
+              >
+                Leave Comment
+              </Button>
+            </HStack>
+          )}
           {comments.length === 0 && (
-            <Text fontSize={"sm"} m={4}>
+            <Text fontWeight={"bold"} fontSize={"sm"} m={6}>
               become a first commenter
             </Text>
           )}
           {comments.length > 0 &&
             comments.map((el) => {
               return (
-                <Box key={el._id}>
+                <Box
+                  key={el._id}
+                  boxShadow={"md"}
+                  maxWidth={"400px"}
+                  px="30px"
+                  py="10px"
+                  rounded={"md"}
+                >
                   <Flex align={"center"} mt="20px" maxWidth={"400px"}>
                     <Avatar
                       size="sm"
@@ -133,7 +143,7 @@ const CommentCard = ({ blog_id }) => {
                     <Text fontSize={"xs"}>{el.posted}</Text>
                   </Flex>
                   <Text fontSize={"sm"} ml={7} mt="2">
-                    Nice Job
+                    {el.comment}
                   </Text>
                 </Box>
               );

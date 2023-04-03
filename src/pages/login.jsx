@@ -20,8 +20,9 @@ import { AiOutlineMail } from "react-icons/ai";
 import { BsShieldLockFill } from "react-icons/bs";
 import { useRef, useState } from "react";
 import { login } from "../Redux/Auth/action";
-import { useDispatch } from "react-redux";
+import { useDispatch,  } from "react-redux";
 export default function Login() {
+  
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [show, setShow] = useState(false);
@@ -179,7 +180,7 @@ export default function Login() {
               fontSize="sm"
               fontWeight="extrabold"
             >
-              Allready have an account?
+              Don't have account?
             </Text>
           </Center>
           <Link to="/signup">

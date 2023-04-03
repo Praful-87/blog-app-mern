@@ -20,7 +20,6 @@ import {
   Spacer,
   useDisclosure,
   Stack,
-  
 } from "@chakra-ui/react";
 import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import { useRef, useState } from "react";
@@ -35,12 +34,19 @@ const SigleBlog = ({ data }) => {
     JSON.parse(localStorage.getItem("authenticaton")) || undefined;
   const userId = authenticaton?.user._id;
   let { isOpen, onOpen, onClose } = useDisclosure();
+  const [loading, setLoading] = useState(false);
   const { blog, _id, user_id, image, posted, title } = data;
   const { name } = user_id;
   const cancelRef = useRef();
-  function handelDelete(id) {
-    dispatch(deleteData(id));
-    onClose();
+  async function handelDelete(id) {
+    try {
+      setLoading(true);
+      await dispatch(deleteData(id));
+      onClose();
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+    }
   }
 
   return (
@@ -65,6 +71,7 @@ const SigleBlog = ({ data }) => {
                   </Button>
                 </Link>
                 <Button
+                  isLoading={loading}
                   leftIcon={<DeleteIcon />}
                   colorScheme={"red"}
                   onClick={onOpen}
@@ -117,15 +124,21 @@ const SigleBlog = ({ data }) => {
           >
             <Image
               flex={1}
-              
               // width={"50%"}
-              maxWidth={["100%","100%",'50%','50%','50%']}
+              maxWidth={["100%", "100%", "50%", "50%", "50%"]}
               src={image}
               alt={name}
               objectFit="cover"
             />
 
-            <Text mb='40px' lineHeight={6} flex={1} fontSize="md" fontFamily={"sans-serif"} mt="40px">
+            <Text
+              mb="40px"
+              lineHeight={6}
+              flex={1}
+              fontSize="md"
+              fontFamily={"sans-serif"}
+              mt="40px"
+            >
               {blog}
             </Text>
           </Stack>

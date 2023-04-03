@@ -31,7 +31,7 @@ export default function Register() {
   const Email = useRef(null);
   const Password = useRef(null);
   const [img, setImg] = useState("");
-  console.log(img);
+  // console.log(img);
   const [isLoading, setLoading] = useState(false);
   async function handelSubmit() {
     let name = Name.current.value;
@@ -52,7 +52,7 @@ export default function Register() {
         // profile_photo
       };
       let result = await dispatch(register(formData));
-      console.log(result);
+      // console.log(result);
       let { res, msg } = result;
       if (res) {
         setLoading(false);

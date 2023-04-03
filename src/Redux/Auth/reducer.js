@@ -1,9 +1,11 @@
 import * as types from "./actionTypes";
 const initialState = {
-  isAuth: false,
+  user: {},
   token: "",
   isLoading: false,
   isError: false,
+  update: false,
+  isAuth: false,
 };
 export const reducer = (oldState = initialState, action) => {
   const { type, payload } = action;
@@ -37,6 +39,7 @@ export const reducer = (oldState = initialState, action) => {
         isAuth: true,
         token: payload,
         isError: false,
+        isAuth: !oldState.isAuth,
       };
     case types.LOGIN_FAILURE:
       return {
@@ -49,12 +52,16 @@ export const reducer = (oldState = initialState, action) => {
         ...oldState,
         isLoading: true,
       };
+
     case types.UPDATE_PROFILE_SUCCESS:
       return {
         ...oldState,
+        // user: payload,
+        isAuth: !oldState.isAuth,
         isLoading: false,
         isError: false,
       };
+
     case types.UPDATE_PROFILE_FAILURE:
       return {
         ...oldState,

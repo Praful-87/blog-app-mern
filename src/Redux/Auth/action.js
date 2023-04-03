@@ -1,9 +1,9 @@
+import { url } from "../../url";
 import * as types from "./actionTypes";
 import axios from "axios";
-// const url = "https://attractive-teal-cap.cyclic.app";
-const url = "http://localhost:8000";
-// const url = "https://creepy-calf-top-coat.cyclic.app";
-// register
+const authenticaton = JSON.parse(localStorage.getItem("authenticaton")) || {};
+
+// console.log(authenticaton);
 
 const registerRequest = () => {
   return {
@@ -43,9 +43,10 @@ const updateRequest = () => {
     type: types.UPDATE_PROFILE_REQUEST,
   };
 };
-const updateSuccess = () => {
+const updateSuccess = (payload) => {
   return {
     type: types.UPDATE_PROFILE_SUCCESS,
+    payload,
   };
 };
 const updateFailure = () => {
@@ -63,33 +64,51 @@ export const register = (formData) => async (dispatch) => {
       },
     });
     dispatch(registerSuccess());
-    // console.log(res);
+
     return { res: true, msg: res.data.msg };
   } catch (err) {
     dispatch(registerFailure());
     // console.log(err.response.data.msg);
+    if (error.response.status === 500)
+      return { res: false, msg: "File NOt supported" };
+    // return error;
     return { res: false, msg: err.response.data.msg };
   }
 };
 
 export const updateProfile = (formData, id) => async (dispatch) => {
   dispatch(updateRequest());
+  // console.log(formData);
   return axios
-    .patch(`${url}/user/update/${id}`, formData)
+    .patch(`${url}/user/update/${id}`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    })
     .then((res) => {
-      dispatch(updateSuccess());
+      // console.log(res);
+      // authenticaton = { ...authenticaton, user: res.data };
+      localStorage.setItem(
+        "authenticaton",
+        JSON.stringify({ ...authenticaton, user: res.data })
+      );
+      dispatch(updateSuccess(res.data));
+      return res.data;
     })
     .catch((err) => {
+      console.log(err.message);
       dispatch(updateFailure());
+      if (err.response.status === 500) return false;
+      return false;
     });
-  console.log(formData);
+  // console.log(formData);
 };
 
 export const login = (payload) => async (dispatch) => {
   dispatch(loginRequest());
   try {
     let res = await axios.post(`${url}/user/login`, payload);
-    dispatch(loginSuccess(res.data.token));
+    
     localStorage.setItem(
       "authenticaton",
       JSON.stringify({
@@ -97,13 +116,11 @@ export const login = (payload) => async (dispatch) => {
         token: res.data.token,
       })
     );
-    // console.log(res.data.userData[0],res.data.token);
-    // localStorage.setItem("userId", res.data.user_id);
-    // console.log(res.data.token);
+    dispatch(loginSuccess(res.data.token));
+    
     return { res: true, msg: res.data.msg };
   } catch (err) {
     dispatch(loginFailure());
-    // console.log(err.response.data.msg);
     return { res: false, msg: err.response.data.msg };
   }
   // console.log(payload)

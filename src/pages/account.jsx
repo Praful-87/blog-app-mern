@@ -15,11 +15,11 @@ import {
   Tooltip,
   useToast,
 } from "@chakra-ui/react";
-import { ArrowBackIcon, EditIcon, SettingsIcon } from "@chakra-ui/icons";
-import { Link, useLocation } from "react-router-dom";
-import { useEffect, useRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import axios from "axios";
+import { SettingsIcon } from "@chakra-ui/icons";
+
+import { useRef, useState } from "react";
+import { useDispatch } from "react-redux";
+
 import { updateProfile } from "../Redux/Auth/action";
 
 export default function Account() {
@@ -33,8 +33,8 @@ export default function Account() {
   const [loading, setLoading] = useState(false);
   const user = authenticaton?.user;
   const dispatch = useDispatch();
-  // console.log(user);
-  const url = "http://localhost:8000";
+  // console.log(newImage);
+
   function handelFocusMode() {
     setEditMode(true);
     Username.current.focus();
@@ -56,36 +56,31 @@ export default function Account() {
 
   async function handelUpdate() {
     let name = Username.current.value;
-    // console.log(name, newImage);
+
     if (name) {
       setLoading(true);
       try {
         let payload = imageUploadController();
-        await dispatch(updateProfile(payload, user._id));
+        let res = await dispatch(updateProfile(payload, user._id));
+        let data = await res;
+        // console.log(data);
         toast({
           title: "Updated",
           status: "success",
           position: "top",
         });
-        let result = await axios.get(`${url}/user/profile/${user._id}`);
-        let data = await result;
-        let deatails = data.data.result;
-        localStorage.setItem(
-          "authenticaton",
-          JSON.stringify({
-            token: authenticaton.token,
-            user: deatails,
-          })
-        );
-        // console.log(deatails);
+
         setLoading(false);
+        setNewImage("");
+        authenticaton.user = data;
+        localStorage.setItem("authenticaton", JSON.stringify(authenticaton));
       } catch (error) {
         toast({
           title: "Failed to Update",
           status: "error",
           position: "top",
         });
-        console.log(error.message);
+        // console.log(error.message);
         setLoading(false);
       }
     } else {
@@ -141,12 +136,7 @@ export default function Account() {
                 alt="User name"
               />
             </Center>
-            {/* <Center>
-              <FormLabel cursor="pointer">
-                <Icon color={"white"} as={EditIcon} boxSize={"6"} />
-                <Input display={"none"} type="file" />
-              </FormLabel>
-            </Center> */}
+
             <Stack spacing="30px">
               <FormControl>
                 <FormLabel>User Name</FormLabel>

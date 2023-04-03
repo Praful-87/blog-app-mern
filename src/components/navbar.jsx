@@ -10,36 +10,21 @@ import {
   MenuButton,
   MenuList,
   MenuItem,
-  Hide,
   Image,
   Button,
   Text,
-  Heading,
   MenuGroup,
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
-import {
-  ChevronDownIcon,
-  MoonIcon,
-  SunIcon,
-  ExternalLinkIcon,
-  RepeatIcon,
-  EditIcon,
-  AddIcon,
-} from "@chakra-ui/icons";
-import { MdOutlineAccountCircle } from "react-icons/md";
+import { MoonIcon, SunIcon, AddIcon } from "@chakra-ui/icons";
 import { useSelector } from "react-redux";
 
 export default function Navbar() {
-  const authenticaton = JSON.parse(localStorage.getItem("authenticaton")) || {};
   const { colorMode, toggleColorMode } = useColorMode();
-  const auth = useSelector((state) => state.AuthReducer.isAuth);
+  const Auth = useSelector((state) => state.AuthReducer.isAuth);
+  const authenticaton = JSON.parse(localStorage.getItem("authenticaton")) || {};
   const isAuth = Object.keys(authenticaton).length > 0 ? true : false;
-  // console.log(user);
   const user = authenticaton?.user;
-
-  // console.log(user);
-  // console.log(Object.keys(authenticaton).length);
 
   return (
     <>

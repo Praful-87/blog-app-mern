@@ -15,30 +15,25 @@ import {
 import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import { updateData } from "../Redux/App/action";
+import { url } from "../url";
 
 const EditBlog = () => {
+  const navigate = useNavigate();
   const toast = useToast();
   const dispatch = useDispatch();
   const { blogId } = useParams();
-  console.log(blogId);
-
-  // updateData
-  const url = "http://localhost:8000";
   const [data, setData] = useState([]);
   const [newImage, setNewImage] = useState("");
   const [loading, setLoading] = useState(false);
   const title = useRef(null);
   const blog = useRef(null);
-  //   console.log(data);
-  //   test();
   async function getByid() {
     try {
       let res = await axios.get(`${url}/blog/${blogId}`);
       let result = await res;
-      // console.log(result)
       setData(result.data);
     } catch (error) {
       console.log(error.message);
@@ -65,14 +60,14 @@ const EditBlog = () => {
     try {
       let payload = imageUploadController();
       await dispatch(updateData(payload, blogId));
-      // console.log(payload)
-      //   console.log('updated')
+
       toast({
         title: "Updated",
         status: "success",
         position: "top",
       });
       setLoading(false);
+      navigate("/");
     } catch (error) {
       toast({
         title: "Failed to Update",

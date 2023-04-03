@@ -9,16 +9,12 @@ import {
   HStack,
   Icon,
   Input,
-  Spacer,
   Textarea,
-  VStack,
-  Text,
   useToast,
 } from "@chakra-ui/react";
-import axios from "axios";
 import React, { useRef, useState } from "react";
 import { useDispatch } from "react-redux";
-import { addData, getData } from "../Redux/App/action";
+import { addData } from "../Redux/App/action";
 import { useNavigate } from "react-router-dom";
 
 const Newblog = () => {
@@ -26,21 +22,18 @@ const Newblog = () => {
   const authenticaton = JSON.parse(localStorage.getItem("authenticaton")) || {};
   const { user } = Object.keys(authenticaton).length > 0 ? authenticaton : null;
   const { _id } = Object.keys(user).length > 0 ? user : null;
-  // console.log(_id);
   const navigate = useNavigate();
   const toast = useToast();
   const Blog = useRef(null);
   const Title = useRef(null);
   const [img, setImg] = useState("");
   const [loading, setLoading] = useState(false);
-  // console.log(img);
   async function handelPost() {
     let blog = Blog.current.value;
     let title = Title.current.value;
 
     if (blog && title && img) {
       setLoading(true);
-      // setLoading(false);
       const formData = new FormData();
       formData.append("blog", blog);
       formData.append("user_id", _id);
@@ -48,19 +41,7 @@ const Newblog = () => {
       formData.append("title", title);
 
       try {
-        // getData
         await dispatch(addData(formData));
-
-        // let res = await axios.post(
-        //   "http://localhost:8000/blog/create",
-        //   formData,
-        //   {
-        //     headers: {
-        //       "Content-Type": "multipart/form-data",
-        //     },
-        //   }
-        // );
-
         setLoading(false);
         toast({
           title: "Posted",
@@ -70,14 +51,13 @@ const Newblog = () => {
           duration: 3000,
           isClosable: true,
         });
-        // console.log(res);
         navigate("/");
       } catch (error) {
         console.log(error.message);
         setLoading(false);
         toast({
           title: "Failed",
-          description: "Failed to post",
+          description: "Server error or file type is not supported",
           status: "error",
           position: "top",
           duration: 3000,
@@ -95,7 +75,6 @@ const Newblog = () => {
       });
     }
   }
-  // const
   return (
     <div>
       <Container mt="10">
@@ -125,7 +104,6 @@ const Newblog = () => {
 
           <Button
             isLoading={loading}
-            // width={"fit-content"}
             onClick={handelPost}
             colorScheme={"twitter"}
           >

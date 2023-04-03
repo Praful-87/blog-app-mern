@@ -1,8 +1,7 @@
+import { url } from "../../url";
 import * as types from "./actionTypes";
 import axios from "axios";
-// const url = "https://attractive-teal-cap.cyclic.app";
-const url = "http://localhost:8000";
-// register
+
 const getDataRequest = () => {
   return {
     type: types.GET_DATA_REQUEST,
@@ -101,29 +100,32 @@ export const deleteData = (id) => (dispatch) => {
       // console.log(res);
       dispatch(deleteDataSuccess());
       dispatch(getData);
+      return true;
     })
     .catch((err) => {
       console.log(err.message);
       dispatch(deleteDataFailure());
+      return false;
     });
 };
 
-export const addData = (formData) => (dispatch) => {
+export const addData = (formData) => async (dispatch) => {
   dispatch(addDataRequest());
-  return axios
-    .post(`${url}/blog/create`, formData, {
+  try {
+    let res = axios.post(`${url}/blog/create`, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
-    })
-    .then((res) => {
-      // console.log(res);
-      dispatch(addDataSuccess());
-      dispatch(getData);
-    })
-    .catch((err) => {
-      dispatch(addDataFailure());
     });
+    dispatch(addDataSuccess());
+    dispatch(getData);
+    return res;
+  } catch (error) {
+    // console.log(error.message);
+    dispatch(addDataFailure());
+    if (error.response.status === 500) return false;
+    return error;
+  }
 };
 
 export const updateData = (formData, id) => (dispatch) => {
