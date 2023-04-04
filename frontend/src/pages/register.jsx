@@ -13,6 +13,7 @@ import {
   IconButton,
   Flex,
   useToast,
+  VStack,
 } from "@chakra-ui/react";
 import { Link, useNavigate } from "react-router-dom";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
@@ -97,7 +98,8 @@ export default function Register() {
       // bgGradient="linear(to-r,#b70ef0,#15a9e8)"
     >
       <Container
-        mt="50px"
+        border={"1px solid gray"}
+        mt="20px"
         shadow="md"
         p={6}
         rounded="md"
@@ -218,7 +220,7 @@ export default function Register() {
             </Button>
           </Center>
 
-          <Center>
+          <VStack>
             <Text
               // bgGradient="linear(to-l, #7928CA, #FF0080)"
               // bgClip="text"
@@ -227,7 +229,8 @@ export default function Register() {
             >
               Allready have an account?
             </Text>
-          </Center>
+            <Text fontSize="xl">&#128071;</Text>
+          </VStack>
           <Link to="/login">
             <Center>
               <Button

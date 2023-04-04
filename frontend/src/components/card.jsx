@@ -21,6 +21,7 @@ import {
   useDisclosure,
   Stack,
   useColorModeValue,
+  useColorMode,
 } from "@chakra-ui/react";
 import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import { useRef, useState } from "react";
@@ -30,6 +31,8 @@ import { Link } from "react-router-dom";
 import CommentCard from "./comment";
 
 const SigleBlog = ({ data }) => {
+  const { colorMode } = useColorMode();
+
   const dispatch = useDispatch();
   const authenticaton =
     JSON.parse(localStorage.getItem("authenticaton")) || undefined;
@@ -115,80 +118,33 @@ const SigleBlog = ({ data }) => {
         </CardHeader>
 
         <CardBody>
-          {/* <Heading size={"md"} mb="20px" textTransform={"capitalize"}>
-            {" "}
-            {title}{" "}
-          </Heading>
-          <Stack
-            gap="30px"
-            direction={["column", "column", "row", "row", "row"]}
-          >
-            <Image
-              flex={1}
-              // width={"50%"}
-              maxWidth={["100%", "100%", "50%", "50%", "50%"]}
-              src={image}
-              alt={name}
-              objectFit="cover"
-            />
-
-            <Text
-              mb="40px"
-              lineHeight={6}
-              flex={1}
-              fontSize="md"
-              fontFamily={"sans-serif"}
-              mt="40px"
-            >
-              {blog}
-            </Text>
-          </Stack>
-
-          <Box>
-            <CommentCard blog_id={_id} />
-          </Box> */}
           <Box
-            // marginTop={{ base: "1", sm: "5" }}
-            // border={"1px solid white"}
             display="flex"
             alignItems={[null, null, null, "center", "center"]}
             gap={"20px"}
-            // flexDirection={{ base: "column", sm: "row" }}
             flexDirection={["column", "column", "row", "row", "row"]}
             justifyContent="space-between"
           >
-            <Box
-              // border={"1px solid white"}
-              borderRadius={"lg"}
-              overflow={"hidden"}
-              // display="flex"
-              flex="1"
-              // marginRight="3"
-              // position="relative"
-              // alignItems="center"
-            >
-              <Image
-                // flex={1}
-                // width={"50%"}
-                width="100%"
-                src={image}
-                alt={name}
-                objectFit="cover"
-              />
+            <Box borderRadius={"lg"} overflow={"hidden"} flex="1">
+              <Image width="100%" src={image} alt={name} objectFit="cover" />
             </Box>
             <Box
               display="flex"
               flex="1"
               flexDirection="column"
               justifyContent="center"
-              // marginTop={{ base: "3", sm: "0" }}
             >
-              <Heading marginTop={["20px", "10px"]}>{title}</Heading>
+              <Heading
+                color={colorMode === "light" ? "teal" : "white"}
+                size={"md"}
+              >
+                {title}
+              </Heading>
               <Text
                 as="p"
                 marginTop="2"
                 color={useColorModeValue("gray.700", "gray.200")}
-                fontSize="lg"
+                fontSize="sm"
               >
                 {blog}
               </Text>

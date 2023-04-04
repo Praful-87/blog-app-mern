@@ -1,9 +1,11 @@
 
 # Notify me.
-Notify me. is the name of my project.
+Name of this project is Notify me.
 
 The objective of this project is to create a blog app where user can Read the blogs , Create blogs, comment on blog they like
+## Visit below link too see demo
 
+[Demo](https://rightous.netlify.app)
 
 
 ## Features
@@ -20,9 +22,34 @@ The objective of this project is to create a blog app where user can Read the bl
 - Delete blog
 - Give comment on the blog
 - Users can't make changes to others' post
+- User cannot create post without loging in
 - Light/dark mode toggle
 
 
+## Tech Stack
+
+## Client
+- react
+- redux
+- react-router-dom
+- react-icons
+- react-redux
+- redux-thunk
+- chakra-ui
+
+
+
+---
+## Server
+- bcrypt
+- cloudinary
+- cors
+- dotenv
+- express
+- jsonwebtoken
+- mongoose
+- multer
+- nodemon
 ## Installation
 
 Install my-project by cloning the repository
@@ -41,7 +68,7 @@ To run this project, you will need to add the following environment variables to
 
 - `DB_URL`   your mongoDb ATLAS url
 
-- `PRIVATE_KEY` to hash your password
+- `PRIVATE_KEY` to hash the password
 
 - #### Cloudinary Variables
 
@@ -104,6 +131,29 @@ To run this project, you will need to add the following environment variables to
 | :-------- | :------- | :-------------------------------- |
 | `blog_id`      | `ObjectId` | **Required**. Id of item to fetch |
 
+---
+
+#### Get all comments on perticular post by blog_Id
+```http
+  GET /comment/${blog_id}
+```
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `blog_id`      | `ObjectId` | **Required**. Id of item to all comments |
+
+#### post comment 
+
+```http
+  POST /comment
+```
+
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `user_id`      | `ObjectId` | **Required**. to create comment|
+| `comment`      | `string` | **Required**. to create comment |
+| `blog_id`      | `ObjectId` | **Required**.  to create comment |
+
+---
 ## Run Locally
 
 Clone the project
@@ -132,7 +182,7 @@ Start the server
 ```bash
   npm run server
 ```
-Start the localhost
+Start the developement server ( localhost )
 
 ```bash
   npm run start
@@ -159,18 +209,19 @@ Go to the frontend directory
 ```
 
 
-## App with Login
+# Screenshots
+### App with Loged In
 
 ![App Screenshot](https://res.cloudinary.com/doaedvl5s/image/upload/v1680586453/Screenshot_185_pgk68a.png)
-## App with Login for mobile view
+### App with Loged In for mobile view
 
 ![App Screenshot](https://res.cloudinary.com/doaedvl5s/image/upload/v1680586923/Screenshot_188_mamoq9.png)
 
-## App without Login
+### App without Loged In
 
 ![App Screenshot](https://res.cloudinary.com/doaedvl5s/image/upload/v1680586453/Screenshot_186_y9fjed.png)
 
-## App without Login for mobile view
+### App without Loged In for mobile view
 
 ![App Screenshot](https://res.cloudinary.com/doaedvl5s/image/upload/v1680586684/Screenshot_187_gtb2sc.png)
 
@@ -187,6 +238,6 @@ Go to the frontend directory
 
 - [@Praful-87](https://github.com/Praful-87)
 
-
+---
 ![Logo](https://res.cloudinary.com/doaedvl5s/image/upload/v1680167039/lyredncxehdefxt5jx29.png)
 

@@ -10,6 +10,7 @@ import {
   FormLabel,
   FormControl,
   useToast,
+  Center,
 } from "@chakra-ui/react";
 
 import axios from "axios";
@@ -82,16 +83,21 @@ const EditBlog = () => {
     getByid();
   }, []);
   return (
-    <Container mt="40px">
+    <Container rounded={'md'} py="20px" px="20px" shadow={"md"} my="20px">
       {Object.keys(data).length > 0 && (
         <Flex direction={"column"} gap="20px">
-          <Heading>Edit Blog</Heading>
+          <Heading size={"md"}>Edit Blog</Heading>
 
-          <Image src={data.image} alt="name" />
+          <Image
+            maxWidth={"400px"}
+            rounded={"md"}
+            src={data.image}
+            alt="name"
+          />
 
           <FormLabel
             width={"fit-content"}
-            bg="green.400"
+            bg="teal.400"
             rounded={"5px"}
             p={2}
             cursor="pointer"
@@ -104,12 +110,16 @@ const EditBlog = () => {
             />
           </FormLabel>
           <FormControl>
-            <FormLabel>Change Title</FormLabel>
-            <Input ref={title} defaultValue={data.title} />
+            <FormLabel fontSize={"sm"} mb="10px" fontWeight={"bold"}>
+              Change Title
+            </FormLabel>
+            <Input fontSize={"sm"} ref={title} defaultValue={data.title} />
           </FormControl>
           <FormControl>
-            <FormLabel>Change Description</FormLabel>
-            <Textarea ref={blog} defaultValue={data.blog} />
+            <FormLabel fontSize={"sm"} fontWeight={"bold"} mb="10px">
+              Change Description
+            </FormLabel>
+            <Textarea fontSize={"sm"} ref={blog} defaultValue={data.blog} />
           </FormControl>
 
           <Button

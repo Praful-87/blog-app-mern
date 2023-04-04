@@ -80,7 +80,7 @@ const CommentCard = ({ blog_id }) => {
       }
     } else {
       toast({
-        title: "Commnt can't be empty",
+        title: "Type something Good!",
         status: "warning",
         position: "top",
       });
@@ -145,6 +145,7 @@ const CommentCard = ({ blog_id }) => {
                   px="20px"
                   py="10px"
                   rounded={"md"}
+                  width={["100%", "100%", "100%", "50%", "50%"]}
                 >
                   <Flex align={"center"}>
                     <Avatar

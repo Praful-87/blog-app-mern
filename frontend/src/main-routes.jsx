@@ -6,9 +6,10 @@ import Login from "./pages/login";
 import Newblog from "./pages/New-blog";
 import Register from "./pages/register";
 import Private from "./private";
+import { Box } from "@chakra-ui/react";
 export default function MainRoutes() {
   return (
-    <>
+    <Box overflow={"hidden"}>
       <Routes>
         <Route path="/" element={<Homepage />} />
         <Route
@@ -41,6 +42,6 @@ export default function MainRoutes() {
           }
         />
       </Routes>
-    </>
+    </Box>
   );
 }

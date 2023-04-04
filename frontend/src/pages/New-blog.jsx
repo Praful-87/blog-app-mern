@@ -66,7 +66,7 @@ const Newblog = () => {
       }
     } else {
       toast({
-        title: "Unsufficient Deails",
+        title: "Unsufficient Details",
         description: "All the fields are mandatory",
         status: "warning",
         position: "top",
@@ -76,42 +76,40 @@ const Newblog = () => {
     }
   }
   return (
-    <div>
-      <Container mt="10">
-        <Flex direction={"column"} gap="20px" shadow={"md"} rounded="md" p={3}>
-          <HStack>
-            <Icon as={AddIcon} boxSize={4} />{" "}
-            <Heading size="md">Create a new Blog blog</Heading>
-          </HStack>
-          <Input ref={Title} placeholder="Title" />
-          <Textarea ref={Blog} placeholder="Write description" />
-          <Center>
-            <FormLabel
-              cursor={"pointer"}
-              bg={"blue.300"}
-              w="fit-content"
-              p={2}
-              rounded="md"
-            >
-              Select image
-              <Input
-                onChange={(e) => setImg(e.target.files[0])}
-                type={"file"}
-                display="none"
-              />
-            </FormLabel>
-          </Center>
-
-          <Button
-            isLoading={loading}
-            onClick={handelPost}
-            colorScheme={"twitter"}
+    <Container py="10">
+      <Flex direction={"column"} gap="20px" shadow={"md"} rounded="md" p={3}>
+        <HStack>
+          <Icon as={AddIcon} boxSize={4} />{" "}
+          <Heading size="md">Create a new Blog blog</Heading>
+        </HStack>
+        <Input ref={Title} placeholder="Title" />
+        <Textarea ref={Blog} placeholder="Write description" />
+        <Center>
+          <FormLabel
+            cursor={"pointer"}
+            bg={"blue.300"}
+            w="fit-content"
+            p={2}
+            rounded="md"
           >
-            Post
-          </Button>
-        </Flex>
-      </Container>
-    </div>
+            Select image
+            <Input
+              onChange={(e) => setImg(e.target.files[0])}
+              type={"file"}
+              display="none"
+            />
+          </FormLabel>
+        </Center>
+
+        <Button
+          isLoading={loading}
+          onClick={handelPost}
+          colorScheme={"twitter"}
+        >
+          Post
+        </Button>
+      </Flex>
+    </Container>
   );
 };
 

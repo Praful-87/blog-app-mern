@@ -13,6 +13,7 @@ import {
   IconButton,
   Flex,
   useToast,
+  VStack,
 } from "@chakra-ui/react";
 import { Link, useNavigate } from "react-router-dom";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
@@ -20,9 +21,8 @@ import { AiOutlineMail } from "react-icons/ai";
 import { BsShieldLockFill } from "react-icons/bs";
 import { useRef, useState } from "react";
 import { login } from "../Redux/Auth/action";
-import { useDispatch,  } from "react-redux";
+import { useDispatch } from "react-redux";
 export default function Login() {
-  
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [show, setShow] = useState(false);
@@ -83,6 +83,7 @@ export default function Login() {
       // bgGradient="linear(to-r,#b70ef0,#15a9e8)"
     >
       <Container
+        border={"1px solid gray"}
         shadow="md"
         p={6}
         rounded="md"
@@ -173,7 +174,7 @@ export default function Login() {
             </Button>{" "}
           </Center>
 
-          <Center>
+          <VStack>
             <Text
               // bgGradient="linear(to-l, #7928CA, #FF0080)"
               // bgClip="text"
@@ -182,7 +183,9 @@ export default function Login() {
             >
               Don't have account?
             </Text>
-          </Center>
+            <Text fontSize="xl">&#128071;</Text>
+          </VStack>
+
           <Link to="/signup">
             <Center>
               <Button
