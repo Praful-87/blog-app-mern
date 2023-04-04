@@ -20,6 +20,7 @@ import {
   Spacer,
   useDisclosure,
   Stack,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import { useRef, useState } from "react";
@@ -114,7 +115,7 @@ const SigleBlog = ({ data }) => {
         </CardHeader>
 
         <CardBody>
-          <Heading size={"md"} mb="20px" textTransform={"capitalize"}>
+          {/* <Heading size={"md"} mb="20px" textTransform={"capitalize"}>
             {" "}
             {title}{" "}
           </Heading>
@@ -145,7 +146,55 @@ const SigleBlog = ({ data }) => {
 
           <Box>
             <CommentCard blog_id={_id} />
+          </Box> */}
+          <Box
+            // marginTop={{ base: "1", sm: "5" }}
+            // border={"1px solid white"}
+            display="flex"
+            alignItems={[null, null, null, "center", "center"]}
+            gap={"20px"}
+            // flexDirection={{ base: "column", sm: "row" }}
+            flexDirection={["column", "column", "row", "row", "row"]}
+            justifyContent="space-between"
+          >
+            <Box
+              // border={"1px solid white"}
+              borderRadius={"lg"}
+              overflow={"hidden"}
+              // display="flex"
+              flex="1"
+              // marginRight="3"
+              // position="relative"
+              // alignItems="center"
+            >
+              <Image
+                // flex={1}
+                // width={"50%"}
+                width="100%"
+                src={image}
+                alt={name}
+                objectFit="cover"
+              />
+            </Box>
+            <Box
+              display="flex"
+              flex="1"
+              flexDirection="column"
+              justifyContent="center"
+              // marginTop={{ base: "3", sm: "0" }}
+            >
+              <Heading marginTop={["20px", "10px"]}>{title}</Heading>
+              <Text
+                as="p"
+                marginTop="2"
+                color={useColorModeValue("gray.700", "gray.200")}
+                fontSize="lg"
+              >
+                {blog}
+              </Text>
+            </Box>
           </Box>
+          <CommentCard blog_id={_id} />
         </CardBody>
       </Card>
     </>

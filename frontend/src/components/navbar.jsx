@@ -16,7 +16,7 @@ import {
   MenuGroup,
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
-import { MoonIcon, SunIcon, AddIcon } from "@chakra-ui/icons";
+import { MoonIcon, SunIcon, AddIcon, InfoOutlineIcon } from "@chakra-ui/icons";
 import { useSelector } from "react-redux";
 
 export default function Navbar() {
@@ -37,14 +37,15 @@ export default function Navbar() {
         h="70px"
         align="center"
         w="full"
-        bgGradient="linear(to-l,#7fc9df,#d038eb,#7fc9df)"
+        // bgGradient="linear(to-l,#7fc9df,#d038eb,#7fc9df)"
+        bg="#1a202c"
       >
         <Box>
           <Link to="/">
             <Flex align={"center"} gap="4px">
               <Image
                 h="40px"
-                src="https://res.cloudinary.com/doaedvl5s/image/upload/v1679925001/Notify_yhvgkj.png"
+                src="https://res.cloudinary.com/doaedvl5s/image/upload/v1680167039/lyredncxehdefxt5jx29.png"
               />
               <Text color={"white"} fontSize={"sm"}>
                 Norify me.
@@ -57,20 +58,19 @@ export default function Navbar() {
           <>
             {isAuth ? (
               <>
-                <Link to="/newblog">
-                  <Button leftIcon={<AddIcon />} colorScheme={"teal"}>
-                    New
-                  </Button>
-                </Link>
-
                 <Menu>
                   <MenuButton>
-                    <Avatar size="md" name={user?.name} src={user?.photo} />
+                    <Avatar size="sm" name={user?.name} src={user?.photo} />
                   </MenuButton>
                   <MenuList>
                     <MenuGroup title="Profile">
                       <Link to="/account">
-                        <MenuItem>My Account</MenuItem>
+                        <MenuItem icon={<InfoOutlineIcon />}>
+                          My Account
+                        </MenuItem>
+                      </Link>
+                      <Link to="/newblog">
+                        <MenuItem icon={<AddIcon />}>New Blog</MenuItem>
                       </Link>
                     </MenuGroup>
                   </MenuList>

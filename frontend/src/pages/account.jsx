@@ -103,7 +103,7 @@ export default function Account() {
           margin="auto"
           mt={8}
           gap="30px"
-          direction={["column", "column", "column", "row", "row"]}
+          direction={["column", "column", "row", "row", "row"]}
         >
           <Stack
             shadow={"md"}

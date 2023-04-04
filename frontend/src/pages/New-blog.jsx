@@ -81,7 +81,7 @@ const Newblog = () => {
         <Flex direction={"column"} gap="20px" shadow={"md"} rounded="md" p={3}>
           <HStack>
             <Icon as={AddIcon} boxSize={4} />{" "}
-            <Heading size="md">Create a new Blog blog user_id</Heading>
+            <Heading size="md">Create a new Blog blog</Heading>
           </HStack>
           <Input ref={Title} placeholder="Title" />
           <Textarea ref={Blog} placeholder="Write description" />
