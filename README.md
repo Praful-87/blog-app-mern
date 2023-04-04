@@ -3,9 +3,7 @@
 Notify me. is the name of my project.
 
 The objective of this project is to create a blog app where user can Read the blogs , Create blogs, comment on blog they like
-## Visit below link too see demo
 
-[Demo](https://github.com/Praful-87)
 
 
 ## Features
