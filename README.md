@@ -5,7 +5,7 @@ Name of this project is Notify me.
 The objective of this project is to create a blog app where user can Read the blogs , Create blogs, comment on blog they like
 ## Visit below link too see demo
 
-[Demo](https://rightous.netlify.app)
+[Demo](https://rightous.netlify.app/)
 
 
 ## Features
