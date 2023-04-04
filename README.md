@@ -29,6 +29,9 @@ The objective of this project is to create a blog app where user can Read the bl
 ## Tech Stack
 
 ## Client
+- html 5
+- css 3
+- javascript
 - react
 - redux
 - react-router-dom
